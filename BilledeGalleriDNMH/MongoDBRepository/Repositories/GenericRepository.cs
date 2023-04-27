@@ -27,7 +27,7 @@ namespace MongoDBRepository.Repositories
 
         public async Task<bool> Delete(Guid id)
         {
-            FilterDefinition<T> filter = Builders<T>.Filter.Eq(T => T.Id == id);
+            FilterDefinition<T> filter = Builders<T>.Filter.Eq(T => T.Id, id);
             DeleteResult result = await collection.DeleteOneAsync(filter);
             return result.DeletedCount != 0;
         }

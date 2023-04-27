@@ -9,7 +9,7 @@
         public string Location { get; set; }
         public string CameraInformation { get; set; }
         public string CopyrightInformation { get; set; }
-        public List<string> Keywords { get; set; }
+        public string[] Keywords { get; set; }
     }
 
     public class ImageMetadataQueryParameters : BaseQueryParameters
@@ -21,6 +21,6 @@
         public string? Location { get; set; }
         public string? CameraInformation { get; set; }
         public string? CopyrightInformation { get; set; }
-        public List<string>? Keywords { get; set; }
+        public string[]? Keywords { get; set; }
     }
 }

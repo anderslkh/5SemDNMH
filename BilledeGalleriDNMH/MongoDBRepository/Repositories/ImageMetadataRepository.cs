@@ -2,8 +2,6 @@
 using Models;
 using MongoDB.Driver;
 using MongoDBRepository.Repositories;
-using Models;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace MongoDBRepository.Repository
 {
@@ -13,7 +11,61 @@ namespace MongoDBRepository.Repository
 
         protected override FilterDefinition<ImageMetadata> CreateFilterDefinition(BaseQueryParameters? filterObject)
         {
-            
+            FilterDefinitionBuilder<ImageMetadata> filterBuilder = Builders<ImageMetadata>.Filter;
+
+            FilterDefinition<ImageMetadata> filter = filterBuilder.Empty;
+
+            if (filterObject != null && filterObject is ImageMetadataQueryParameters)
+            {
+                ImageMetadataQueryParameters queryParameters = (ImageMetadataQueryParameters)filterObject;
+
+                if (queryParameters.Id != null)
+                {
+                    filter &= filterBuilder.Eq(imageMetadata => imageMetadata.Id, queryParameters.Id);
+                }
+
+                if (queryParameters.Images.Length != 0)
+                {
+                    filter &= filterBuilder.Eq(imageMetadata => imageMetadata.Images, queryParameters.Images);
+                }
+
+                if (queryParameters.Title != null)
+                {
+                    filter &= filterBuilder.Eq(imageMetadata => imageMetadata.Title, queryParameters.Title);
+                }
+
+                if (queryParameters.Description != null)
+                {
+                    filter &= filterBuilder.Eq(imageMetadata => imageMetadata.Description, queryParameters.Description);
+                }
+
+                if (queryParameters.DateTime != null)
+                {
+                    filter &= filterBuilder.Eq(imageMetadata => imageMetadata.DateTime, queryParameters.DateTime);
+                }
+
+                if (queryParameters.Location != null)
+                {
+                    filter &= filterBuilder.Eq(imageMetadata => imageMetadata.Location, queryParameters.Location);
+                }
+
+                if (queryParameters.CameraInformation != null)
+                {
+                    filter &= filterBuilder.Eq(imageMetadata => imageMetadata.CameraInformation, queryParameters.CameraInformation);
+                }
+
+                if (queryParameters.CopyrightInformation != null)
+                {
+                    filter &= filterBuilder.Eq(imageMetadata => imageMetadata.CopyrightInformation, queryParameters.CopyrightInformation);
+                }
+
+                if (queryParameters.Keywords.Length != 0)
+                {
+                    filter &= filterBuilder.Eq(imageMetadata => imageMetadata.Keywords, queryParameters.Keywords);
+                }
+            }
+
+            return filter;
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Models.Repos;
+using MongoDBRepository.Repositories;
 
 namespace API.Controllers
 {
@@ -7,12 +7,6 @@ namespace API.Controllers
     [Route("/controller")]
     public class ImageMetadataController : Controller
     {
-        [HttpGet]
-        public bool TestConnection()
-        {
-            var res = ImageMetadataRepo.GetMongoDBConnection();
-            return res;
-        }
     }
 
 
