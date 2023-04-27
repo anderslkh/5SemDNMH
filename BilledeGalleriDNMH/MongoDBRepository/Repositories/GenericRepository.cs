@@ -18,7 +18,6 @@ namespace MongoDBRepository.Repositories
 
             collection = database.GetCollection<T>(typeof(T).Name);
         }
-     
 
         public async Task<T> Create(T t)
         {
