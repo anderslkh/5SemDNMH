@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Models
+﻿namespace Models
 {
-    public class ImageMetadata
+    public class ImageMetadata : Entity
     {
         public byte[] Images { get; set; }
         public string Title { get; set; }
@@ -16,5 +10,17 @@ namespace Models
         public string CameraInformation { get; set; }
         public string CopyrightInformation { get; set; }
         public List<string> Keywords { get; set; }
+    }
+
+    public class ImageMetadataQueryParameters : BaseQueryParameters
+    {
+        public byte[]? Images { get; set; }
+        public string? Title { get; set; }
+        public string? Description { get; set; }
+        public DateTime? DateTime { get; set; }
+        public string? Location { get; set; }
+        public string? CameraInformation { get; set; }
+        public string? CopyrightInformation { get; set; }
+        public List<string>? Keywords { get; set; }
     }
 }
