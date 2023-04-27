@@ -18,6 +18,7 @@ namespace MongoDBRepository.Repositories
 
             collection = database.GetCollection<T>(typeof(T).Name);
         }
+     
 
         public async Task<T> Create(T t)
         {
@@ -35,6 +36,18 @@ namespace MongoDBRepository.Repositories
         public Task<T> Read(T t)
         {
             throw new NotImplementedException();
+        }
+
+        protected virtual FilterDefinition<T> CreateFilterDefinition(BaseQueryParameters? filterObject)
+        {
+            FilterDefinition<T> filter = Builders<T>.Filter.Empty;
+
+            if (filterObject is not null)
+            {
+                Console.Error.WriteLine("Filtering is not supported on generic repositories");
+            }
+
+            return filter;
         }
     }
 }
