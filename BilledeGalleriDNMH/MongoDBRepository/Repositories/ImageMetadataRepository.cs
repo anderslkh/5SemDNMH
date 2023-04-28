@@ -24,9 +24,9 @@ namespace MongoDBRepository.Repository
                     filter &= filterBuilder.Eq(imageMetadata => imageMetadata.Id, queryParameters.Id);
                 }
 
-                if (queryParameters.Images.Length != 0)
+                if (queryParameters.ImageByte.Length != 0)
                 {
-                    filter &= filterBuilder.Eq(imageMetadata => imageMetadata.Images, queryParameters.Images);
+                    filter &= filterBuilder.Eq(imageMetadata => imageMetadata.ImageByte, queryParameters.ImageByte);
                 }
 
                 if (queryParameters.Title != null)

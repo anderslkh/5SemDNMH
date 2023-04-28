@@ -1,6 +1,6 @@
 ﻿namespace Models
 {
-    public class Image
+    public class ImageByte
     {
         public byte[] Images { get; set; }
     }
