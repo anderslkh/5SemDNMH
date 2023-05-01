@@ -1,4 +1,6 @@
-﻿    using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.Extensions.Options;
     using Models;
     using MongoDB.Driver;
 
@@ -8,21 +10,20 @@
         {
             protected IMongoCollection<ImageMetadata> collection;
 
-            public ImageMetadataRepository(IOptions<MongoDBSettings> mongoDBSettings)
+            public ImageMetadataRepository()
             {
-                MongoClientSettings settings = MongoClientSettings.FromConnectionString(mongoDBSettings.Value.ConnectionURI);
+                MongoClientSettings settings = MongoClientSettings.FromConnectionString(Configuration.GetConnectionUri());
 
-                MongoClient client = new MongoClient(mongoDBSettings.Value.ConnectionURI);
+                MongoClient client = new MongoClient(Configuration.GetConnectionUri());
 
-                IMongoDatabase database = client.GetDatabase(mongoDBSettings.Value.DatabaseName);
+                IMongoDatabase database = client.GetDatabase(Configuration.GetDatabaseName());
 
                 collection = database.GetCollection<ImageMetadata>(typeof(ImageMetadata).Name);
             }
 
-            public async Task<ImageMetadata> Create(ImageMetadata imageMetadata)
+            public async Task Create(ImageMetadata imageMetadata)
             {
                 await collection.InsertOneAsync(imageMetadata);
-                return imageMetadata;
             }
 
             public async Task<bool> Delete(Guid id)

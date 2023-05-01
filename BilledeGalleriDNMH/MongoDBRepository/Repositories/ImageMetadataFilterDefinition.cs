@@ -7,8 +7,6 @@ namespace MongoDBRepository.Repository
 {
     public class ImageMetadataFilterDefinition : ImageMetadataRepository
     {
-        public ImageMetadataFilterDefinition(IOptions<MongoDBSettings> mongoDBSettings) : base(mongoDBSettings) { }
-
         protected override FilterDefinition<ImageMetadata> CreateFilterDefinition(BaseQueryParameters? filterObject)
         {
             FilterDefinitionBuilder<ImageMetadata> filterBuilder = Builders<ImageMetadata>.Filter;

@@ -18,19 +18,18 @@ namespace API.Controllers
         //}
         private readonly ImageMetadataRepository _imageMetadataRepository;
 
-        public ImageMetadataController(IOptions<MongoDBSettings> mongoDBSettings)
+        public ImageMetadataController()
         {
-            _imageMetadataRepository = new ImageMetadataRepository(mongoDBSettings);
+            _imageMetadataRepository = new ImageMetadataRepository();
         }
 
         [HttpPost]
         [Route("Create")]
-        public async Task<IResult> Create([FromForm] Image image)
+        public async Task<IResult> Create([FromForm] ImageFile image)
         {
             ImagaMetadataLogic imageMetadataLogic = new();
 
-
-            var imageFile = image.ImageFile;
+            var imageFile = image.ImageFormFile;
 
             var imageByte = await imageMetadataLogic.IFormFileToByte(imageFile);
 
@@ -42,7 +41,7 @@ namespace API.Controllers
                     Image = imageByte,
                     Title = image.Title,
                     Description = imageWithMetadata.Description,
-                    DateTime = imageWithMetadata.DateTime,
+                    DateTime = (DateTime)imageWithMetadata.DateTime,
                     Location = imageWithMetadata.Location,
                     CameraInformation = imageWithMetadata.CameraInformation,
                     CopyrightInformation = image.CopyrightInformation,
@@ -50,9 +49,9 @@ namespace API.Controllers
                 };
 
 
-            var result = _imageMetadataRepository.Create(imageMetadata);
+            await _imageMetadataRepository.Create(imageMetadata);
 
-            return Results.Ok(result);
+            return Results.Ok(StatusCodes.Status200OK);
         }
     }
 }

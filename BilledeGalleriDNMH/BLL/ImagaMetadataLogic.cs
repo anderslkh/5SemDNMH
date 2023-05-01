@@ -25,39 +25,53 @@ namespace BLL
         {
             var memoryStream = new MemoryStream(fileBytes);
 
-            using (var image = System.Drawing.Image.FromStream(memoryStream))
+            using (var image = Image.FromStream(memoryStream))
             {
                 var metadata = new Metadata
                 {
-                    Title = GetTitleFromImage(image),
-                    Description = GetDescriptionFromImage(image),
-                    DateTime = (DateTime)GetDateTakenFromImage(image),
-                    Location = GetLocationFromImage(image),
-                    CameraInformation = GetCameraInformationFromImage(image),
-                    CopyrightInformation = GetCopyrightInformationFromImage(image),
-                    Keywords = GetKeywordsFromImage(image)
+                    Title = GetTitleFromImage(image) ?? "",
+                    Description = GetDescriptionFromImage(image) ?? "",
+                    DateTime = GetDateTakenFromImage(image) ?? DateTime.Now,
+                    Location = GetLocationFromImage(image) ?? "",
+                    CameraInformation = GetCameraInformationFromImage(image) ?? "",
+                    CopyrightInformation = GetCopyrightInformationFromImage(image) ?? "",
+                    Keywords = GetKeywordsFromImage(image) ?? new string[] { "" }
                 };
 
-                return metadata;
+            return metadata;
             }
-
         }
 
         //PropertyId is the same as EXIF and it stands for "Exchangeable Image File Format".
         //This type of information is formatted according to the TIFF specification, and may be found in JPG, TIFF, PNG, JP2, PGF, MIFF, HDP, PSP and XCF images,
         //as well as many TIFF-based RAW images, and even some AVI and MOV videos.
         //https://exiftool.org/TagNames/EXIF.html
-        private static string GetTitleFromImage(System.Drawing.Image image)
+        private static string GetTitleFromImage(Image image)
         {
-            return GetPropertyString(image, 0x9c9b);
+            try
+            {
+                return GetPropertyString(image, 0x9c9b);
+            }
+            catch
+            {
+
+                return null;
+            }
         }
 
-        private static string GetDescriptionFromImage(System.Drawing.Image image)
+        private static string GetDescriptionFromImage(Image image)
         {
-            return GetPropertyString(image, 0x010e);
+            try
+            {
+                return GetPropertyString(image, 0x010e);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
-        private static DateTime? GetDateTakenFromImage(System.Drawing.Image image)
+        private static DateTime? GetDateTakenFromImage(Image image)
         {
             try
             {
@@ -72,34 +86,67 @@ namespace BLL
             }
         }
 
-        private static string GetLocationFromImage(System.Drawing.Image image)
+        private static string GetLocationFromImage(Image image)
         {
-            return GetPropertyString(image, 0x927c);
-        }
-
-        private static string GetCameraInformationFromImage(System.Drawing.Image image)
-        {
-            return GetPropertyString(image, 0xc614);
-        }
-
-        private static string GetCopyrightInformationFromImage(System.Drawing.Image image)
-        {
-            return GetPropertyString(image, 0x8298);
-        }
-
-        private static string[] GetKeywordsFromImage(System.Drawing.Image image)
-        {
-            var propertyItem = image.GetPropertyItem(0x9c9e);
-            if (propertyItem != null && propertyItem.Type == 2)
+            try
             {
-                var value = Encoding.UTF8.GetString(propertyItem.Value, 0, propertyItem.Len);
-                return value.Split(';');
+                return GetPropertyString(image, 0x927c);    
             }
-            return null;
+            catch
+            {
+                return null;
+            }
+        }
+
+        private static string GetCameraInformationFromImage(Image image)
+        {
+            try
+            {
+                return GetPropertyString(image, 0xc614);
+            }
+            catch
+            {
+                return null;
+            }
+            
+        }
+
+        private static string GetCopyrightInformationFromImage(Image image)
+        {
+            try
+            {
+                return GetPropertyString(image, 0x8298);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private static string[] GetKeywordsFromImage(Image image)
+        {
+            try
+            {
+                var propertyItem = image.GetPropertyItem(0x9c9e);
+                string[] strings = new string[10];
+                if (propertyItem != null && propertyItem.Type == 2)
+                {
+                    var value = Encoding.UTF8.GetString(propertyItem.Value, 0, propertyItem.Len);
+
+                    strings = value.Split(';');
+                }
+
+                return strings;
+            }
+            catch
+            {
+
+                return null;
+            }
         }
 
         // Helper method to get a string property from the image metadata
-        private static string GetPropertyString(System.Drawing.Image image, int propertyId)
+        private static string GetPropertyString(Image image, int propertyId)
         {
             var propertyItem = image.GetPropertyItem(propertyId);
             if (propertyItem != null && propertyItem.Type == 2)
