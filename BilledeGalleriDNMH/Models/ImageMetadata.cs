@@ -22,5 +22,5 @@
         public string? CameraInformation { get; set; }
         public string? CopyrightInformation { get; set; }
         public string[]? Keywords { get; set; }
-    }
+    } 
 }

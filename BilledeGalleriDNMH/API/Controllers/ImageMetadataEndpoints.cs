@@ -47,7 +47,7 @@ namespace API.Controllers
         {
             ImageMetadataRepository imageMetadataRepository = new ImageMetadataRepository();
 
-            List<ImageMetadata> result = await imageMetadataRepository.ReadMany(imageMetadataQuery);
+            List<ImageMetadata> result = await imageMetadataRepository.FilterImageMetadata(imageMetadataQuery);
 
             return Results.Ok(result);
         }
