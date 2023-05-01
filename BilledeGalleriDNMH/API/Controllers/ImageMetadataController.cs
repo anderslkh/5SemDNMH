@@ -16,13 +16,19 @@ namespace API.Controllers
         //{
         //    application.MapPost("/imageMetadatas", Create);
         //}
+        private readonly ImageMetadataRepository _imageMetadataRepository;
 
+        public ImageMetadataController(IOptions<MongoDBSettings> mongoDBSettings)
+        {
+            _imageMetadataRepository = new ImageMetadataRepository(mongoDBSettings);
+        }
 
         [HttpPost]
         [Route("Create")]
-        public async Task<IResult> Create(IRepository<ImageMetadata> repository, [FromForm] Image image)
+        public async Task<IResult> Create([FromForm] Image image)
         {
             ImagaMetadataLogic imageMetadataLogic = new();
+
 
             var imageFile = image.ImageFile;
 
@@ -44,7 +50,7 @@ namespace API.Controllers
                 };
 
 
-            var result = repository.Create(imageMetadata);
+            var result = _imageMetadataRepository.Create(imageMetadata);
 
             return Results.Ok(result);
         }

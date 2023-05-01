@@ -10,7 +10,7 @@ namespace MongoDBRepository
         {
             builder.Services.Configure<MongoDBSettings>(builder.Configuration.GetSection("MongoDB"));
 
-            builder.Services.AddSingleton<IRepository<ImageMetadata>>();
+
         }
     }
 }
