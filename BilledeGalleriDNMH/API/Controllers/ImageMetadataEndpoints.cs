@@ -45,9 +45,9 @@ namespace API.Controllers
 
         static async Task<IResult> GetMany([AsParameters] ImageMetadataQueryParameters imageMetadataQuery)
         {
-            ImageMetadataRepository imageMetadataRepository = new ImageMetadataRepository();
+            ImageMetadataRepository imageMetadataRepository = new();
 
-            List<ImageMetadata> result = await imageMetadataRepository.FilterImageMetadata(imageMetadataQuery);
+            List<ImageMetadata> result = await imageMetadataRepository.ReadMany(imageMetadataQuery);
 
             return Results.Ok(result);
         }
