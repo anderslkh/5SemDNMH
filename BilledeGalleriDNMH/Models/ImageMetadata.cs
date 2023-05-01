@@ -2,7 +2,7 @@
 {
     public class ImageMetadata : Entity
     {
-        public byte[] ImageByte { get; set; }
+        public byte[] Image { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime DateTime { get; set; }
@@ -14,7 +14,7 @@
 
     public class ImageMetadataQueryParameters : BaseQueryParameters
     {
-        public byte[]? ImageByte { get; set; }
+        public byte[]? Image { get; set; }
         public string? Title { get; set; }
         public string? Description { get; set; }
         public DateTime? DateTime { get; set; }

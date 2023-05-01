@@ -9,7 +9,7 @@ namespace BLL
 {
     public class ImagaMetadataLogic
     {
-        public async Task<byte[]> IFormFileTOByte(IFormFile file)
+        public async Task<byte[]> IFormFileToByte(IFormFile file)
         {
             byte[] fileBytes;
             using (var memoryStream = new MemoryStream())
@@ -25,7 +25,7 @@ namespace BLL
         {
             var memoryStream = new MemoryStream(fileBytes);
 
-            using (var image = Image.FromStream(memoryStream))
+            using (var image = System.Drawing.Image.FromStream(memoryStream))
             {
                 var metadata = new Metadata
                 {
@@ -47,17 +47,17 @@ namespace BLL
         //This type of information is formatted according to the TIFF specification, and may be found in JPG, TIFF, PNG, JP2, PGF, MIFF, HDP, PSP and XCF images,
         //as well as many TIFF-based RAW images, and even some AVI and MOV videos.
         //https://exiftool.org/TagNames/EXIF.html
-        private static string GetTitleFromImage(Image image)
+        private static string GetTitleFromImage(System.Drawing.Image image)
         {
             return GetPropertyString(image, 0x9c9b);
         }
 
-        private static string GetDescriptionFromImage(Image image)
+        private static string GetDescriptionFromImage(System.Drawing.Image image)
         {
             return GetPropertyString(image, 0x010e);
         }
 
-        private static DateTime? GetDateTakenFromImage(Image image)
+        private static DateTime? GetDateTakenFromImage(System.Drawing.Image image)
         {
             try
             {
@@ -72,22 +72,22 @@ namespace BLL
             }
         }
 
-        private static string GetLocationFromImage(Image image)
+        private static string GetLocationFromImage(System.Drawing.Image image)
         {
             return GetPropertyString(image, 0x927c);
         }
 
-        private static string GetCameraInformationFromImage(Image image)
+        private static string GetCameraInformationFromImage(System.Drawing.Image image)
         {
             return GetPropertyString(image, 0xc614);
         }
 
-        private static string GetCopyrightInformationFromImage(Image image)
+        private static string GetCopyrightInformationFromImage(System.Drawing.Image image)
         {
             return GetPropertyString(image, 0x8298);
         }
 
-        private static string[] GetKeywordsFromImage(Image image)
+        private static string[] GetKeywordsFromImage(System.Drawing.Image image)
         {
             var propertyItem = image.GetPropertyItem(0x9c9e);
             if (propertyItem != null && propertyItem.Type == 2)
@@ -99,7 +99,7 @@ namespace BLL
         }
 
         // Helper method to get a string property from the image metadata
-        private static string GetPropertyString(Image image, int propertyId)
+        private static string GetPropertyString(System.Drawing.Image image, int propertyId)
         {
             var propertyItem = image.GetPropertyItem(propertyId);
             if (propertyItem != null && propertyItem.Type == 2)
