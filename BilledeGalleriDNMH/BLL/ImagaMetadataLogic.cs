@@ -9,18 +9,6 @@ namespace BLL
 {
     public class ImagaMetadataLogic
     {
-        public async Task<byte[]> IFormFileToByte(IFormFile file)
-        {
-            byte[] fileBytes;
-            using (var memoryStream = new MemoryStream())
-            {
-                await file.CopyToAsync(memoryStream);
-                fileBytes = memoryStream.ToArray();
-            }
-
-            return fileBytes;
-        }
-
         public Metadata ExtractMetaDataFromByte(byte[] fileBytes)
         {
             var memoryStream = new MemoryStream(fileBytes);
