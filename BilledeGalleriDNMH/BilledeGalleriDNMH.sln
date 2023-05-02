@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MongoDBRepository", "MongoDBRepository\MongoDBRepository.csproj", "{B5B6BA0C-CD3D-477C-9B9D-F410EA7A83D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "BLL\BLL.csproj", "{A42654C4-3F89-468C-B429-50B149647C5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BLL", "BLL\BLL.csproj", "{A42654C4-3F89-468C-B429-50B149647C5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp", "WebApp\WebApp.csproj", "{AC7A655A-C8C0-4489-A456-CB6B30BEE300}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{A42654C4-3F89-468C-B429-50B149647C5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A42654C4-3F89-468C-B429-50B149647C5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A42654C4-3F89-468C-B429-50B149647C5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC7A655A-C8C0-4489-A456-CB6B30BEE300}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC7A655A-C8C0-4489-A456-CB6B30BEE300}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC7A655A-C8C0-4489-A456-CB6B30BEE300}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC7A655A-C8C0-4489-A456-CB6B30BEE300}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
