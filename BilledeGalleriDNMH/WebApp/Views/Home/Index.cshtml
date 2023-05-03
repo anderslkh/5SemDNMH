@@ -6,3 +6,28 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+<h1>Image Uploader</h1>
+<form action="/upload" method="post" enctype="multipart/form-data">
+    <label for="image">Select an image:</label>
+    <input type="file" id="image" name="Image">
+    <br><br>
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="Title">
+    <br><br>
+    <label for="copyright">Copyright information:</label>
+    <input type="text" id="copyright" name="CopyrightInformation">
+    <br><br>
+    <label for="keywords">Keywords:</label>
+    <input type="text" id="keywords" name="Keywords">
+    <br><br>
+    <input type="submit" value="Upload">
+</form>
+<hr>
+<h2>Gallery</h2>
+<div id="gallery">
+@*    @foreach (string imageUrl in ViewBag.ImageUrls)
+    {
+        <img src="@imageUrl" style="width: 200px; height: 200px; margin: 10px;">
+    }*@
+</div>

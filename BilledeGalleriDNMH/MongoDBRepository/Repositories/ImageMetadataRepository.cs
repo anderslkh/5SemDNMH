@@ -103,7 +103,7 @@ namespace MongoDBRepository.Repositories
                     filter &= filterBuilder.Eq(imageMetadata => imageMetadata.Keywords, queryParameters.Keywords);
                 }
             }
-
+            
             return filter;
         }
 
