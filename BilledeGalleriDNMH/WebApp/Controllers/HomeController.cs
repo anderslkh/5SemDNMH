@@ -2,6 +2,7 @@
 using Models;
 using System.Diagnostics;
 using WebApp.Models;
+using WebApp.Service;
 
 namespace WebApp.Controllers
 {
@@ -24,7 +25,7 @@ namespace WebApp.Controllers
             return View();
         }
 
-        public ActionResult Upload(ImageFormFile imageFile)
+        public async Task UploadAsync(ImageFormFile imageFile)
         {
             if (imageFile.File != null && imageFile.File.Length > 0)
             {
@@ -33,32 +34,40 @@ namespace WebApp.Controllers
                 {
                     imageFile.File.CopyTo(memoryStream);
                     imageBytes = memoryStream.ToArray();
+
+                    ImageFile file = new ImageFile
+                    {
+                        CopyrightInformation = imageFile.CopyrightInformation,
+                        ImageByte = imageBytes,
+                        Keywords = imageFile.Keywords,
+                        Title = imageFile.Title
+                    };
+
+                    ImageMetadataService imageMetadataService = new();
+
+                    await imageMetadataService.UploadImage(file);
                 }
             }
-
-            // redirect to the main page
-            return RedirectToAction("Index");
         }
 
-        public ActionResult Gallery()
-        {
-            string[] filenames = Directory.GetFiles(Server.MapPath("~/images"));
-            List<string> imageUrls = new List<string>();
-            foreach (string filename in filenames)
-            {
-                string imageUrl = Url.Content("~/images/" + Path.GetFileName(filename));
-                imageUrls.Add(imageUrl);
-            }
+        //public ActionResult Gallery()
+        //{
+        //    string[] filenames = Directory.GetFiles(Server.MapPath("~/images"));
+        //    List<string> imageUrls = new List<string>();
+        //    foreach (string filename in filenames)
+        //    {
+        //        string imageUrl = Url.Content("~/images/" + Path.GetFileName(filename));
+        //        imageUrls.Add(imageUrl);
+        //    }
 
-            ViewBag.ImageUrls = imageUrls;
-            return View();
-        }
-    }
+        //    ViewBag.ImageUrls = imageUrls;
+        //    return View();
+        //}
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-    }
+   }
 }

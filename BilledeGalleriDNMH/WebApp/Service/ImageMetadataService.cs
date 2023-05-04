@@ -15,6 +15,23 @@ namespace WebApp.Service
             _httpClient = new HttpClient();
         }
 
+        public async Task<string> UploadImage(ImageFile imageFile)
+        {
+            _httpClient.BaseAddress = new Uri(restUrl);
+
+            HttpResponseMessage response = await _httpClient.PostAsJsonAsync(restUrl, imageFile);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string result = await response.Content.ReadAsStringAsync();
+                return result;
+            }
+            else
+            {
+                throw new Exception($"API call failed with status code {response.StatusCode}");
+            };
+        }
+
         public async Task<List<ImageMetadata>> GetImageMetadata(
             string? title = null,
             string? description = null,
