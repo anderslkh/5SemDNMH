@@ -1,4 +1,5 @@
-﻿@model Models.ImageFile
+﻿@model List<ImageObject>
+@using Models
 
 @{
     ViewData["Title"] = "Home Page";
@@ -9,53 +10,74 @@
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
 
-<form asp-action="UploadAsync">
-    <div class="form-group">
-        <label for="image">Select an image:</label>
-        <input type="file" id="image" name="Image">
-        <br><br>
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="Title">
-        <br><br>
-        <label for="copyright">Copyright information:</label>
-        <input type="text" id="copyright" name="CopyrightInformation">
-        <br><br>
-        <label for="keywords">Keywords:</label>
-        <input type="text" id="keywords" name="Keywords">
-        <br><br>
-
-
-
+<form asp-action="UploadAsync" enctype="multipart/form-data">
+    <div>
+        <label for="Title">Title:</label>
+        <input type="text" name="Title" id="Title" />
     </div>
-    <div class="form-group">
-        <input type="submit" value="Upload">
+    <div>
+        <label for="File">File:</label>
+        <input type="file" name="File" id="File" />
     </div>
-
-
+    <div>
+        <label for="CopyrightInformation">Copyright Information:</label>
+        <input type="text" name="CopyrightInformation" id="CopyrightInformation" />
+    </div>
+    <div>
+        <label for="Keywords">Keywords (separate with comma):</label>
+        <input type="text" name="Keywords" id="Keywords" />
+    </div>
+    <div>
+        <button type="submit">Upload</button>
+    </div>
 </form>
 
-
-<h1>Image Uploader</h1>
-<form action="/upload" method="post" enctype="multipart/form-data">
-    <label for="image">Select an image:</label>
-    <input type="file" id="image" name="Image">
-    <br><br>
-    <label for="title">Title:</label>
-    <input type="text" id="title" name="Title">
-    <br><br>
-    <label for="copyright">Copyright information:</label>
-    <input type="text" id="copyright" name="CopyrightInformation">
-    <br><br>
-    <label for="keywords">Keywords:</label>
-    <input type="text" id="keywords" name="Keywords">
-    <br><br>
-    <input type="submit" value="Upload">
-</form>
 <hr>
 <h2>Gallery</h2>
-<div id="gallery">
-@*    @foreach (string imageUrl in ViewBag.ImageUrls)
+<form asp-controller="Home" asp-action="Images" method="get">
+    <div>
+        <label for="title">Title:</label>
+        <input type="text" name="title" id="title" value="@ViewData["title"]" />
+    </div>
+    <div>
+        <label for="description">Description:</label>
+        <input type="text" name="description" id="description" value="@ViewData["description"]" />
+    </div>
+    <div>
+        <label for="dateTime">Date and Time:</label>
+        <input type="text" name="dateTime" id="dateTime" value="@ViewData["dateTime"]" />
+    </div>
+    <div>
+        <label for="location">Location:</label>
+        <input type="text" name="location" id="location" value="@ViewData["location"]" />
+    </div>
+    <div>
+        <label for="cameraInformation">Camera Information:</label>
+        <input type="text" name="cameraInformation" id="cameraInformation" value="@ViewData["cameraInformation"]" />
+    </div>
+    <div>
+        <label for="copyrightInformation">Copyright Information:</label>
+        <input type="text" name="copyrightInformation" id="copyrightInformation" value="@ViewData["copyrightInformation"]" />
+    </div>
+    <div>
+        <label for="keywords">Keywords:</label>
+        <input type="text" name="keywords" id="keywords" value="@ViewData["keywords"]" />
+    </div>
+    <button type="submit">Search</button>
+</form>
+
+<<div class="image-list">
+    @if (Model != null)
     {
-        <img src="@imageUrl" style="width: 200px; height: 200px; margin: 10px;">
-    }*@
+        @foreach (var image in Model)
+        {
+            if (image != null)
+            {
+                <div class="image-item">
+                    <img src="data:image/jpeg;base64,@image.Base64"/>
+                </div>
+            }
+        }
+    }
+</div>
 </div>
