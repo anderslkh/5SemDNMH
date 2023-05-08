@@ -25,9 +25,11 @@ namespace WebApp.Controllers
             return View();
         }
 
-        public async Task UploadAsync(ImageFormFile imageFile)
+        [HttpPost]
+        [Route("[controller]/UploadAsync")]
+        public async Task<ActionResult> UploadAsync(ImageFormFile imageFile)
         {
-            if (imageFile.File != null && imageFile.File.Length > 0)
+            if (imageFile.File != null)
             {
                 byte[] imageBytes;
                 using (var memoryStream = new MemoryStream())
@@ -48,6 +50,7 @@ namespace WebApp.Controllers
                     await imageMetadataService.UploadImage(file);
                 }
             }
+            return View("Succes");
         }
 
         //public ActionResult Gallery()
