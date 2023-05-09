@@ -65,19 +65,3 @@
     </div>
     <button type="submit">Search</button>
 </form>
-
-<<div class="image-list">
-    @if (Model != null)
-    {
-        @foreach (var image in Model)
-        {
-            if (image != null)
-            {
-                <div class="image-item">
-                    <img src="data:image/jpeg;base64,@image.Base64"/>
-                </div>
-            }
-        }
-    }
-</div>
-</div>

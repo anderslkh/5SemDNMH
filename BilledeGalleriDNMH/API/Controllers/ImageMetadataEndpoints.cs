@@ -43,13 +43,13 @@ namespace API.Controllers
             return Results.Ok(StatusCodes.Status200OK);
         }
 
-        static async Task<IResult> GetMany([AsParameters] ImageMetadataQueryParameters imageMetadataQuery)
+        static async Task<List<ImageMetadata>> GetMany([AsParameters] ImageMetadataQueryParameters imageMetadataQuery)
         {
             ImageMetadataRepository imageMetadataRepository = new();
 
             List<ImageMetadata> result = await imageMetadataRepository.ReadMany(imageMetadataQuery);
 
-            return Results.Ok(result);
+            return result;
         }
     }
 }

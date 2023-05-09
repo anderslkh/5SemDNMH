@@ -72,8 +72,9 @@ namespace WebApp.Controllers
                 imageObjects.Add(ConvertBytesToImage(image.Image));
             }
 
-            return View(imageObjects);
+            return View("Images", imageObjects);
         }
+
         private ImageObject ConvertBytesToImage(byte[] data)
         {
             if (data == null)

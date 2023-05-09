@@ -1,7 +1,9 @@
 ﻿using Models;
-using MongoDB.Bson.Serialization;
-using MongoDB.Bson;
+//using MongoDB.Bson.Serialization;
+//using MongoDB.Bson;
 using MongoDB.Driver;
+//using MongoDB.Bson.IO;
+using Newtonsoft.Json;
 
 namespace WebApp.Service
 {
@@ -58,9 +60,8 @@ namespace WebApp.Service
                 if (response.IsSuccessStatusCode) 
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    var documents = BsonSerializer.Deserialize<List<ImageMetadata>>(content);
+                    var documents = JsonConvert.DeserializeObject<List<ImageMetadata>>(content); 
                     foundImageMetadata = documents.ToList();
-                    //foundImageMetadata = JsonConvert.DeserializeObject<List<ImageMetadata>>(content).ToList();
                 }
             }
             catch (BadHttpRequestException ex)

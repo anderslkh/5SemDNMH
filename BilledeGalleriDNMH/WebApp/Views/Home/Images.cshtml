@@ -1,0 +1,19 @@
+﻿@model List<ImageObject>
+@using Models
+
+<h1>Image Gallery</h1>
+
+<div class="image-gallery">
+    @if (Model != null)
+    {
+        @foreach (var image in Model)
+        {
+            if (image != null)
+            {
+                <div class="image-item">
+                    <img src="data:image/jpeg;base64,@image.Base64" />
+                </div>
+            }
+        }
+    }
+</div>

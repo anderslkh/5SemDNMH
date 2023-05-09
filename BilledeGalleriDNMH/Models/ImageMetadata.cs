@@ -1,4 +1,6 @@
-﻿namespace Models
+﻿using MongoDB.Bson.Serialization.Attributes;
+
+namespace Models
 {
     public class ImageMetadata : Entity
     {
