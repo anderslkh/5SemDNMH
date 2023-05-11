@@ -4,6 +4,7 @@ namespace Models
 {
     public class ImageMetadata : Entity
     {
+        public string ImageIdentifier { get; set; }
         public byte[] Image { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
@@ -16,6 +17,7 @@ namespace Models
 
     public class ImageMetadataQueryParameters : BaseQueryParameters
     {
+        public string? ImageIdentifier { get; set; }
         public byte[]? Image { get; set; }
         public string? Title { get; set; }
         public string? Description { get; set; }

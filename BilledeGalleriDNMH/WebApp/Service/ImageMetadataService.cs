@@ -41,7 +41,8 @@ namespace WebApp.Service
             string? location = null,
             string? cameraInformation = null,
             string? copyrightInformation = null,
-            string[]? keywords = null)
+            string[]? keywords = null,
+            string imageIdentifier = null)
         {
             List<ImageMetadata> foundImageMetadata = null;
             string useUrl = GetCustomUrl(
@@ -51,7 +52,8 @@ namespace WebApp.Service
                 location, 
                 cameraInformation, 
                 copyrightInformation, 
-                keywords);
+                keywords,
+                imageIdentifier);
 
             var uri = new Uri(useUrl);
             try
@@ -78,7 +80,8 @@ namespace WebApp.Service
             string? location = null, 
             string? cameraInformation = null, 
             string? copyrightInformation = null, 
-            string[]? keywords = null)
+            string[]? keywords = null,
+            string imageIdentifier = null)
         {
             string baseUrl = "https://localhost:7107";
             string endpoint = "imageMetadatas";
@@ -112,6 +115,11 @@ namespace WebApp.Service
             {
                 string joinedKeywords = string.Join(',', keywords.Select(k => Uri.EscapeDataString(k)));
                 queryString += $"Keywords={joinedKeywords}&";
+            }
+            if (imageIdentifier != null)
+            {
+                queryString += $"ImageIdentifier={Uri.EscapeDataString(imageIdentifier)}&";
+
             }
 
             queryString = queryString.TrimEnd('&');

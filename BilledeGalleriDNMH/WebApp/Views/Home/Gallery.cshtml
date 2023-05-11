@@ -1,0 +1,44 @@
+﻿@model List<ImageObject>
+@using Models
+
+<div class="row row-cols-1 row-cols-md-2 g-4">
+    @foreach (var image in Model)
+    {
+        <div class="col">
+            <div class="card">
+                <img src="@($"data:image/jpeg;base64,{Convert.ToBase64String(image.Data)}")" class="card-img-top" alt="@image.ImageTitle" >
+                <div class="card-body">
+                    <h5 class="card-title">@image.ImageTitle</h5>
+                    <p class="card-text">@image.ImageDescription</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+<button id="copyButton" type="button" onclick="copyGallery()" class="btn btn-primary">Copy Gallery</button>
+
+<script>
+    function copyGallery() {
+        // Select the gallery container
+        const galleryContainer = document.querySelector('.row');
+
+        // Create a temporary textarea element
+        const textarea = document.createElement('textarea');
+        textarea.value = galleryContainer.outerHTML;
+
+        // Append the textarea to the document
+        document.body.appendChild(textarea);
+
+        // Copy the gallery HTML to the clipboard
+        textarea.select();
+        document.execCommand('copy');
+
+        // Remove the temporary textarea
+        document.body.removeChild(textarea);
+
+        // Display a success message or perform other actions
+        alert('Gallery copied to clipboard!');
+    }
+</script>

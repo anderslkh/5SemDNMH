@@ -55,7 +55,6 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        [Route("[controller]/Gallery")]
         public async Task<IActionResult> Images(string title, string description, string dateTime, string location, string cameraInformation, string copyrightInformation, string keywords)
         {
             ImageMetadataService metadataService = new();
@@ -69,13 +68,34 @@ namespace WebApp.Controllers
 
             foreach (var image in images)
             {
-                imageObjects.Add(ConvertBytesToImage(image.Image));
+                imageObjects.Add(ConvertBytesToImage(image.Image, image.Title, image.Description, image.ImageIdentifier));
             }
 
             return View("Images", imageObjects);
         }
 
-        private ImageObject ConvertBytesToImage(byte[] data)
+        public async Task<IActionResult> MoveToGallery(string[] selectedImages, string title, string description, string dateTime, string location, string cameraInformation, string copyrightInformation, string keywords)
+        {
+            ImageMetadataService metadataService = new();
+
+            string[] keywordArray = ConvertKeywordsToArray(keywords);
+            DateTime? dateTimeValue = ConvertStringToDateTime(dateTime);
+
+            List<ImageObject> galleryImages = new List<ImageObject>();
+
+            foreach (string imageId in selectedImages)
+            {
+                var imageMetadatas = await metadataService.GetImageMetadata(title, description, dateTimeValue, location, cameraInformation, copyrightInformation, keywordArray, imageId);
+                var imageMetadata = imageMetadatas.First();
+
+                ImageObject imageObject = ConvertBytesToImage(imageMetadata.Image, imageMetadata.Title, imageMetadata.Description, imageMetadata.ImageIdentifier);
+                galleryImages.Add(imageObject);
+            }
+
+            return View("Gallery", galleryImages);
+        }
+
+        private ImageObject ConvertBytesToImage(byte[] data, string title, string description, string id)
         {
             if (data == null)
             {
@@ -91,7 +111,10 @@ namespace WebApp.Controllers
                     {
                         Data = data,
                         Base64 = Convert.ToBase64String(data),
-                        Object = image
+                        Object = image,
+                        ImageTitle = title,
+                        ImageDescription = description,
+                        Id = id,
                     };
                 }
             }

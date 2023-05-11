@@ -1,19 +1,36 @@
 ﻿@model List<ImageObject>
 @using Models
 
+<style>
+    .image {
+        max-width: 800px;
+        max-height: 600px;
+    }
+</style>
+
 <h1>Image Gallery</h1>
 
-<div class="image-gallery">
-    @if (Model != null)
-    {
-        @foreach (var image in Model)
+<form method="post" action="@Url.Action("MoveToGallery", "Home")">
+    <div class="image-gallery">
+        @if (Model != null)
         {
-            if (image != null)
+            @foreach (var image in Model)
             {
-                <div class="image-item">
-                    <img src="data:image/jpeg;base64,@image.Base64" />
-                </div>
+                if (image != null)
+                {
+                    <div>
+                        <h3>@image.ImageTitle</h3>
+                        <h3>@image.Id</h3>
+                        <img src="data:image/jpeg;base64, @image.Base64" class="image"/>
+                        <p>@image.ImageDescription</p>
+                        <input type="checkbox" name="selectedImages" value="@image.Id" />
+                    </div>
+                    <br />
+                    <br />
+                }
             }
         }
-    }
-</div>
+
+        <button type="submit">Move to Gallery</button>
+    </div>
+</form>

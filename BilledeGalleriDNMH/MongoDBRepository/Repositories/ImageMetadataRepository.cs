@@ -68,6 +68,11 @@ namespace MongoDBRepository.Repositories
                     filter &= filterBuilder.Eq(imageMetadata => imageMetadata.Image, queryParameters.Image);
                 }
 
+                if (queryParameters.ImageIdentifier != null)
+                {
+                    filter &= filterBuilder.Eq(imageMetadata => imageMetadata.ImageIdentifier, queryParameters.ImageIdentifier);
+                }
+
                 if (queryParameters.Title != null)
                 {
                     filter &= filterBuilder.Eq(imageMetadata => imageMetadata.Title, queryParameters.Title);

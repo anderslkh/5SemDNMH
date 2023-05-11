@@ -36,6 +36,7 @@ namespace API.Controllers
                     CameraInformation = imageWithMetadata.CameraInformation,
                     CopyrightInformation = imageFile.CopyrightInformation,
                     Keywords = imageFile.Keywords,
+                    ImageIdentifier = Guid.NewGuid().ToString(),
                 };
 
             await imageMetadataRepository.Create(imageMetadata);
