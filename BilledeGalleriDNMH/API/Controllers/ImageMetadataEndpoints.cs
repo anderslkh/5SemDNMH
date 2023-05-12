@@ -24,20 +24,23 @@ namespace API.Controllers
             ImageMetadataRepository imageMetadataRepository = new ImageMetadataRepository();
 
             var imageWithMetadata = imageMetadataLogic.ExtractMetaDataFromByte(imageFile.ImageByte);
-       
-                //løsning lav nogle af variabler noget man SKAL udfylde.
-                ImageMetadata imageMetadata = new ImageMetadata 
-                { 
-                    Image = imageFile.ImageByte,
-                    Title = imageFile.Title,
-                    Description = imageWithMetadata.Description,
-                    DateTime = (DateTime)imageWithMetadata.DateTime,
-                    Location = imageWithMetadata.Location,
-                    CameraInformation = imageWithMetadata.CameraInformation,
-                    CopyrightInformation = imageFile.CopyrightInformation,
-                    Keywords = imageFile.Keywords,
-                    ImageIdentifier = Guid.NewGuid().ToString(),
-                };
+
+            var imageUpdated = ImageMetadataEditor.UpdateExifMetadata(imageFile.ImageByte, imageFile.Title, imageWithMetadata.Description, imageFile.CopyrightInformation, imageFile.Keywords);
+
+            //løsning lav nogle af variabler noget man SKAL udfylde.
+            ImageMetadata imageMetadata = new ImageMetadata 
+            { 
+                Image = imageUpdated,
+                Title = imageFile.Title,
+                Description = imageWithMetadata.Description,
+                DateTime = (DateTime)imageWithMetadata.DateTime,
+                Location = imageWithMetadata.Location,
+                CameraInformation = imageWithMetadata.CameraInformation,
+                CopyrightInformation = imageFile.CopyrightInformation,
+                Keywords = imageFile.Keywords,
+                ImageIdentifier = Guid.NewGuid().ToString(),
+            };
+
 
             await imageMetadataRepository.Create(imageMetadata);
 

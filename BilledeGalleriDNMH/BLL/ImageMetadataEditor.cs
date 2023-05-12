@@ -21,33 +21,15 @@ namespace BLL
             }
 
             // Set the desired EXIF data
-            SetPropertyItemString(image, 0x9C9B, "Title", Encoding.UTF8.GetBytes("New image title")); //Byte
-            SetPropertyItemString(image, 0x010E, "Image Description", Encoding.UTF8.GetBytes("New image description")); //Ascii
-            SetPropertyItemString(image, 0x8298, "Copyright Information", Encoding.UTF8.GetBytes("New image copyright")); //Ascii
-            SetPropertyItemString(image, 0x9C9E, "Keywords", Encoding.UTF8.GetBytes("New image keywords")); //Byte
-
-            // Modify the "ImageDescription" property data
-            PropertyItem imageDescription = image.PropertyItems.FirstOrDefault(p => p.Id == 0x010E);
-
-            if (imageDescription != null)
-            {
-                imageDescription.Value = Encoding.ASCII.GetBytes("new image description");
-                image.SetPropertyItem(imageDescription);
-            }
-
-            // Modify the "ImageDescription" property data
-            PropertyItem copyrightInformation = image.PropertyItems.FirstOrDefault(p => p.Id == 0x8298);
-
-            if (imageDescription != null)
-            {
-                copyrightInformation.Value = Encoding.ASCII.GetBytes("new copyright information");
-                image.SetPropertyItem(imageDescription);
-            }
+            SetPropertyItemString(image, 0x9C9B, "Title", Encoding.UTF8.GetBytes(imageTitle)); //Byte
+            SetPropertyItemString(image, 0x010E, "Image Description", Encoding.UTF8.GetBytes(imageDesc)); //Ascii
+            SetPropertyItemString(image, 0x8298, "Copyright Information", Encoding.UTF8.GetBytes(copyrightInfo)); //Ascii
+            SetPropertyItemString(image, 0x9C9E, "Keywords", Encoding.UTF8.GetBytes(string.Join(", ", keywords))); //Byte
 
             // Convert the modified image back to a byte array and return it
             using (MemoryStream ms = new MemoryStream())
             {
-                image.Save(ms, ImageFormat.Jpeg);
+                //image.Save(ms, ImageFormat.Jpeg);
                 return ms.ToArray();
             }
         }
