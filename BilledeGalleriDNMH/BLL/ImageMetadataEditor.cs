@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -10,20 +11,45 @@ namespace BLL
 {
     public class ImageMetadataEditor
     {
-        static void Main()
+        public static byte[] UpdateExifMetadata(byte[] imageBytes, string imageTitle, string imageDesc, string copyrightInfo, string[] keywords)
         {
-            // Load the image
-            Image image = Image.FromFile("path/to/image.jpg");
+            // Load the image from the byte array
+            Image image;
+            using (MemoryStream ms = new MemoryStream(imageBytes))
+            {
+                image = Image.FromStream(ms);
+            }
 
             // Set the desired EXIF data
-            SetPropertyItemString(image, 0x9c9b, "Title", Encoding.UTF8.GetBytes("New image title"));
-            SetPropertyItemString(image, 0x010e, "Image Description", Encoding.UTF8.GetBytes("New image description"));
-            SetPropertyItemString(image, 0x9003, "DateTime", Encoding.UTF8.GetBytes(DateTime.Now.ToString("yyyy:MM:dd HH:mm:ss")));
-            SetPropertyItemString(image, 0x8298, "Copyright Information", Encoding.UTF8.GetBytes("New image copyright"));
-            SetPropertyItemString(image, 0x9C9E, "Keywords", Encoding.UTF8.GetBytes("New image keywords"));
+            SetPropertyItemString(image, 0x9C9B, "Title", Encoding.UTF8.GetBytes("New image title")); //Byte
+            SetPropertyItemString(image, 0x010E, "Image Description", Encoding.UTF8.GetBytes("New image description")); //Ascii
+            SetPropertyItemString(image, 0x8298, "Copyright Information", Encoding.UTF8.GetBytes("New image copyright")); //Ascii
+            SetPropertyItemString(image, 0x9C9E, "Keywords", Encoding.UTF8.GetBytes("New image keywords")); //Byte
 
-            // Save the modified image with the updated EXIF data
-            image.Save("path/to/image.jpg", ImageFormat.Jpeg);
+            // Modify the "ImageDescription" property data
+            PropertyItem imageDescription = image.PropertyItems.FirstOrDefault(p => p.Id == 0x010E);
+
+            if (imageDescription != null)
+            {
+                imageDescription.Value = Encoding.ASCII.GetBytes("new image description");
+                image.SetPropertyItem(imageDescription);
+            }
+
+            // Modify the "ImageDescription" property data
+            PropertyItem copyrightInformation = image.PropertyItems.FirstOrDefault(p => p.Id == 0x8298);
+
+            if (imageDescription != null)
+            {
+                copyrightInformation.Value = Encoding.ASCII.GetBytes("new copyright information");
+                image.SetPropertyItem(imageDescription);
+            }
+
+            // Convert the modified image back to a byte array and return it
+            using (MemoryStream ms = new MemoryStream())
+            {
+                image.Save(ms, ImageFormat.Jpeg);
+                return ms.ToArray();
+            }
         }
 
         // Helper method to set an EXIF property item string value
