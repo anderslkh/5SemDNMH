@@ -1,7 +1,10 @@
+using WebApp.Service;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<ImageMetadataService>();
 
 var app = builder.Build();
 

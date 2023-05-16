@@ -26,11 +26,21 @@ namespace BLL
             SetPropertyItemString(image, 0x8298, "Copyright Information", Encoding.UTF8.GetBytes(copyrightInfo)); //Ascii
             SetPropertyItemString(image, 0x9C9E, "Keywords", Encoding.UTF8.GetBytes(string.Join(", ", keywords))); //Byte
 
+
             // Convert the modified image back to a byte array and return it
             using (MemoryStream ms = new MemoryStream())
             {
-                //image.Save(ms, ImageFormat.Jpeg);
-                return ms.ToArray();
+                try
+                {
+                    image.Save(ms, ImageFormat.Jpeg);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+                    var res = ms.ToArray();
+                    return res;
+                
             }
         }
 

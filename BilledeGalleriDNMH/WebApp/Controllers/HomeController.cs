@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Models;
 using System.Diagnostics;
+using System.Drawing;
 using WebApp.Models;
 using WebApp.Service;
 using static System.Net.Mime.MediaTypeNames;
@@ -10,10 +11,14 @@ namespace WebApp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ImageMetadataService _imageMetadataService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(
+            ILogger<HomeController> logger, 
+            ImageMetadataService imageMetadataService)
         {
             _logger = logger;
+            _imageMetadataService = imageMetadataService;
         }
 
         public IActionResult Index()
@@ -30,26 +35,28 @@ namespace WebApp.Controllers
         [Route("[controller]/UploadAsync")]
         public async Task<ActionResult> UploadAsync(ImageFormFile imageFile)
         {
+            // Save imageBytes to database
+
             if (imageFile.File != null)
             {
-                byte[] imageBytes;
-                using (var memoryStream = new MemoryStream())
+                var filePath = Path.GetTempFileName();
+                using (var stream = System.IO.File.Create(filePath))
                 {
-                    imageFile.File.CopyTo(memoryStream);
-                    imageBytes = memoryStream.ToArray();
-
-                    ImageFile file = new ImageFile
-                    {
-                        CopyrightInformation = imageFile.CopyrightInformation,
-                        ImageByte = imageBytes,
-                        Keywords = imageFile.Keywords,
-                        Title = imageFile.Title
-                    };
-
-                    ImageMetadataService imageMetadataService = new();
-
-                    await imageMetadataService.UploadImage(file);
+                    await imageFile.File.CopyToAsync(stream);
                 }
+                var imageBytes = System.IO.File.ReadAllBytes(filePath);
+
+                ImageFile file = new ImageFile
+                {
+                    CopyrightInformation = imageFile.CopyrightInformation,
+                    ImageByte = imageBytes,
+                    Keywords = imageFile.Keywords,
+                    Title = imageFile.Title
+                };
+
+                ImageMetadataService imageMetadataService = new();
+
+                await imageMetadataService.UploadImage(file);
             }
             return View("index");
         }
