@@ -48,10 +48,12 @@ namespace WebApp.Controllers
 
                 ImageFile file = new ImageFile
                 {
-                    CopyrightInformation = imageFile.CopyrightInformation,
                     ImageByte = imageBytes,
-                    Keywords = imageFile.Keywords,
-                    Title = imageFile.Title
+                    Title = imageFile.Title,
+                    Description = imageFile.Description,
+                    Location = imageFile.Location,
+                    CopyrightInformation = imageFile.CopyrightInformation,
+                    Keywords = imageFile.Keywords.Split(",").Select(x => x.Trim()).ToArray()
                 };
 
                 ImageMetadataService imageMetadataService = new();
@@ -62,14 +64,14 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Images(string title, string description, string dateTime, string location, string cameraInformation, string copyrightInformation, string keywords)
+        public async Task<IActionResult> Images(string title, string description, string dateTime, string location, string copyrightInformation, string keywords)
         {
             ImageMetadataService metadataService = new();
 
             string[] keywordArray = ConvertKeywordsToArray(keywords);
             DateTime? dateTimeValue = ConvertStringToDateTime(dateTime);
 
-            List<ImageMetadata> images = await metadataService.GetImageMetadata(title, description, dateTimeValue, location, cameraInformation, copyrightInformation, keywordArray);
+            List<ImageMetadata> images = await metadataService.GetImageMetadata(title, description, dateTimeValue, location, copyrightInformation, keywordArray);
 
             List<ImageObject> imageObjects = new List<ImageObject>();
 
@@ -81,7 +83,7 @@ namespace WebApp.Controllers
             return View("Images", imageObjects);
         }
 
-        public async Task<IActionResult> MoveToGallery(string[] selectedImages, string title, string description, string dateTime, string location, string cameraInformation, string copyrightInformation, string keywords)
+        public async Task<IActionResult> MoveToGallery(string[] selectedImages, string title, string description, string dateTime, string location, string copyrightInformation, string keywords)
         {
             ImageMetadataService metadataService = new();
 
@@ -92,7 +94,7 @@ namespace WebApp.Controllers
 
             foreach (string imageId in selectedImages)
             {
-                var imageMetadatas = await metadataService.GetImageMetadata(title, description, dateTimeValue, location, cameraInformation, copyrightInformation, keywordArray, imageId);
+                var imageMetadatas = await metadataService.GetImageMetadata(title, description, dateTimeValue, location, copyrightInformation, keywordArray, imageId);
                 var imageMetadata = imageMetadatas.First();
 
                 ImageObject imageObject = ConvertBytesToImage(imageMetadata.Image, imageMetadata.Title, imageMetadata.Description, imageMetadata.ImageIdentifier);

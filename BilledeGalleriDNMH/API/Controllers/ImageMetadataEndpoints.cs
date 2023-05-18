@@ -25,17 +25,16 @@ namespace API.Controllers
 
             var imageWithMetadata = imageMetadataLogic.ExtractMetaDataFromByte(imageFile.ImageByte);
 
-            var imageUpdated = ImageMetadataEditor.UpdateExifMetadata(imageFile.ImageByte, imageFile.Title, imageWithMetadata.Description, imageFile.CopyrightInformation, imageFile.Keywords);
+            //var imageUpdated = ImageMetadataEditor.UpdateExifMetadata(imageFile.ImageByte, imageFile.Title, imageWithMetadata.Description, imageFile.CopyrightInformation, imageFile.Keywords);
 
             //løsning lav nogle af variabler noget man SKAL udfylde.
             ImageMetadata imageMetadata = new ImageMetadata 
             { 
-                Image = imageUpdated,
+                Image = imageFile.ImageByte,
                 Title = imageFile.Title,
-                Description = imageWithMetadata.Description,
+                Description = imageFile.Description,
                 DateTime = (DateTime)imageWithMetadata.DateTime,
-                Location = imageWithMetadata.Location,
-                CameraInformation = imageWithMetadata.CameraInformation,
+                Location = imageFile.Location,
                 CopyrightInformation = imageFile.CopyrightInformation,
                 Keywords = imageFile.Keywords,
                 ImageIdentifier = Guid.NewGuid().ToString(),

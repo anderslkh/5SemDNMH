@@ -12,12 +12,20 @@
 
 <form asp-action="UploadAsync" enctype="multipart/form-data">
     <div>
+        <label for="File">File:</label>
+        <input type="file" name="File" id="File" />
+    </div>
+    <div>
         <label for="Title">Title:</label>
         <input type="text" name="Title" id="Title" />
     </div>
     <div>
-        <label for="File">File:</label>
-        <input type="file" name="File" id="File" />
+        <label for="Description">Description:</label>
+        <input type="text" name="Description" id="Description" />
+    </div>
+    <div>
+        <label for="Lcoation">Location:</label>
+        <input type="text" name="Location" id="Location" />
     </div>
     <div>
         <label for="CopyrightInformation">Copyright Information:</label>
@@ -50,10 +58,6 @@
     <div>
         <label for="location">Location:</label>
         <input type="text" name="location" id="location" value="@ViewData["location"]" />
-    </div>
-    <div>
-        <label for="cameraInformation">Camera Information:</label>
-        <input type="text" name="cameraInformation" id="cameraInformation" value="@ViewData["cameraInformation"]" />
     </div>
     <div>
         <label for="copyrightInformation">Copyright Information:</label>

@@ -39,7 +39,6 @@ namespace WebApp.Service
             string? description = null,
             DateTime? dateTime = null,
             string? location = null,
-            string? cameraInformation = null,
             string? copyrightInformation = null,
             string[]? keywords = null,
             string imageIdentifier = null)
@@ -50,7 +49,6 @@ namespace WebApp.Service
                 description, 
                 dateTime, 
                 location, 
-                cameraInformation, 
                 copyrightInformation, 
                 keywords,
                 imageIdentifier);
@@ -78,7 +76,6 @@ namespace WebApp.Service
             string? description = null, 
             DateTime? dateTime = null, 
             string? location = null, 
-            string? cameraInformation = null, 
             string? copyrightInformation = null, 
             string[]? keywords = null,
             string imageIdentifier = null)
@@ -102,10 +99,6 @@ namespace WebApp.Service
             if (!string.IsNullOrEmpty(location))
             {
                 queryString += $"Location={Uri.EscapeDataString(location)}&";
-            }
-            if (!string.IsNullOrEmpty(cameraInformation))
-            {
-                queryString += $"CameraInformation={Uri.EscapeDataString(cameraInformation)}&";
             }
             if (!string.IsNullOrEmpty(copyrightInformation))
             {

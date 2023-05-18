@@ -93,11 +93,6 @@ namespace MongoDBRepository.Repositories
                     filter &= filterBuilder.Eq(imageMetadata => imageMetadata.Location, queryParameters.Location);
                 }
 
-                if (queryParameters.CameraInformation != null)
-                {
-                    filter &= filterBuilder.Eq(imageMetadata => imageMetadata.CameraInformation, queryParameters.CameraInformation);
-                }
-
                 if (queryParameters.CopyrightInformation != null)
                 {
                     filter &= filterBuilder.Eq(imageMetadata => imageMetadata.CopyrightInformation, queryParameters.CopyrightInformation);

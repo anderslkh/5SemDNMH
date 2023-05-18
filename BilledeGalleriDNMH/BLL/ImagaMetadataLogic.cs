@@ -21,7 +21,6 @@ namespace BLL
                     Description = GetDescriptionFromImage(image) ?? "",
                     DateTime = GetDateTakenFromImage(image) ?? DateTime.Now,
                     Location = GetLocationFromImage(image) ?? "",
-                    CameraInformation = GetCameraInformationFromImage(image) ?? "",
                     CopyrightInformation = GetCopyrightInformationFromImage(image) ?? "",
                     Keywords = GetKeywordsFromImage(image) ?? new string[] { "" }
                 };
@@ -84,19 +83,6 @@ namespace BLL
             {
                 return null;
             }
-        }
-
-        private static string GetCameraInformationFromImage(Image image)
-        {
-            try
-            {
-                return GetPropertyString(image, 0xc614);
-            }
-            catch
-            {
-                return null;
-            }
-            
         }
 
         private static string GetCopyrightInformationFromImage(Image image)
