@@ -15,10 +15,8 @@ namespace BLL
         {
             // Load the image from the byte array
             Image image;
-            using (MemoryStream ms = new MemoryStream(imageBytes))
-            {
-                image = Image.FromStream(ms);
-            }
+            using MemoryStream ms = new MemoryStream(imageBytes);
+            image = Image.FromStream(ms);     
 
             // Set the desired EXIF data
             SetPropertyItemString(image, 0x9C9B, "Title", Encoding.UTF8.GetBytes(imageTitle)); //Byte
@@ -26,21 +24,19 @@ namespace BLL
             SetPropertyItemString(image, 0x8298, "Copyright Information", Encoding.UTF8.GetBytes(copyrightInfo)); //Ascii
             SetPropertyItemString(image, 0x9C9E, "Keywords", Encoding.UTF8.GetBytes(string.Join(", ", keywords))); //Byte
 
-
             // Convert the modified image back to a byte array and return it
-            using (MemoryStream ms = new MemoryStream())
+            using (MemoryStream outputMs = new MemoryStream())
             {
                 try
                 {
-                    image.Save(ms, ImageFormat.Jpeg);
+                    image.Save(outputMs, ImageFormat.Jpeg);
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
                 }
-                    var res = ms.ToArray();
-                    return res;
-                
+                var res = outputMs.ToArray();
+                return res;
             }
         }
 
