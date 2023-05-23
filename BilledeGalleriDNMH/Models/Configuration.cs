@@ -28,5 +28,19 @@ namespace Models
         {
             return _configuration.GetConnectionString("DatabaseName");
         }
+        public static string GetSecretKey()
+        {
+            return _configuration.GetSection("JwtConfig")["SecretKey"];
+        }
+
+        public static string GetIssuer()
+        {
+            return _configuration.GetSection("JwtConfig")["Issuer"];
+        }
+
+        public static string GetAudience()
+        {
+            return _configuration.GetSection("JwtConfig")["Audience"];
+        }
     }
 }

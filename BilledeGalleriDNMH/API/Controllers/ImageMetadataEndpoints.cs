@@ -43,7 +43,7 @@ namespace API.Controllers
 
             await imageMetadataRepository.Create(imageMetadata);
 
-            return Results.Ok(StatusCodes.Status200OK);
+            return Results.Ok();
         }
 
         static async Task<List<ImageMetadata>> GetMany([AsParameters] ImageMetadataQueryParameters imageMetadataQuery)
