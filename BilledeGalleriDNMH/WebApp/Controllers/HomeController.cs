@@ -101,7 +101,7 @@ namespace WebApp.Controllers
                 galleryImages.Add(imageObject);
             }
 
-            return View("Gallery", galleryImages);
+            return View("GalleryEmbedTest", galleryImages);
         }
 
         private ImageObject ConvertBytesToImage(byte[] data, string title, string description, string id)
