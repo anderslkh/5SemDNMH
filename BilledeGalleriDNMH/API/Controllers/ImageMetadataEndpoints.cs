@@ -21,7 +21,8 @@ namespace API.Controllers
         {
             ImageMetadataRepository imageMetadataRepository = new ImageMetadataRepository();
 
-            var imageUpdated = ImageMetadataEditor.UpdateExifMetadata(imageMetadata.Image, imageMetadata.Title, imageMetadata.Description, imageMetadata.CopyrightInformation, imageMetadata.Keywords);
+            var imageUpdated = ImageMetadataEditor.UpdateExifMetadata(imageMetadata.Image, imageMetadata.Title, 
+                imageMetadata.Description, imageMetadata.CopyrightInformation, imageMetadata.Keywords);
 
             imageMetadata.Image = imageUpdated; 
 
