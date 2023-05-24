@@ -46,11 +46,12 @@ namespace WebApp.Controllers
                 }
                 var imageBytes = System.IO.File.ReadAllBytes(filePath);
 
-                ImageFile file = new ImageFile
-                {
-                    ImageByte = imageBytes,
+                ImageMetadata imageMetadata = new ImageMetadata 
+                { 
+                    Image = imageBytes,
                     Title = imageFile.Title,
                     Description = imageFile.Description,
+                    DateTime = DateTime.Now,
                     Location = imageFile.Location,
                     CopyrightInformation = imageFile.CopyrightInformation,
                     Keywords = imageFile.Keywords.Split(",").Select(x => x.Trim()).ToArray()
@@ -58,8 +59,9 @@ namespace WebApp.Controllers
 
                 ImageMetadataService imageMetadataService = new();
 
-                await imageMetadataService.UploadImage(file);
+                await imageMetadataService.UploadImage(imageMetadata);
             }
+
             return View("index");
         }
 

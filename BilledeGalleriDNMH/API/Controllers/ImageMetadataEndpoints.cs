@@ -17,31 +17,31 @@ namespace API.Controllers
             application.MapGet("/imageMetadatas", GetMany);
         }
 
-        static async Task<IResult> Create([FromBody] ImageFile imageFile)
+        static async Task<IResult> Create([FromBody] ImageMetadata imageMetadata)
         {
             ImagaMetadataLogic imageMetadataLogic = new();
 
             ImageMetadataRepository imageMetadataRepository = new ImageMetadataRepository();
 
-            var imageWithMetadata = imageMetadataLogic.ExtractMetaDataFromByte(imageFile.ImageByte);
+            var imageWithMetadata = imageMetadataLogic.ExtractMetaDataFromByte(imageMetadata.Image);
 
-            var imageUpdated = ImageMetadataEditor.UpdateExifMetadata(imageFile.ImageByte, imageFile.Title, imageWithMetadata.Description, imageFile.CopyrightInformation, imageFile.Keywords);
+            var imageUpdated = ImageMetadataEditor.UpdateExifMetadata(imageMetadata.Image, imageMetadata.Title, imageWithMetadata.Description, imageMetadata.CopyrightInformation, imageMetadata.Keywords);
 
             //løsning lav nogle af variabler noget man SKAL udfylde.
-            ImageMetadata imageMetadata = new ImageMetadata 
+            ImageMetadata updatedImageMetadata = new ImageMetadata 
             { 
                 Image = imageUpdated,
-                Title = imageFile.Title,
-                Description = imageFile.Description,
-                DateTime = (DateTime)imageWithMetadata.DateTime,
-                Location = imageFile.Location,
-                CopyrightInformation = imageFile.CopyrightInformation,
-                Keywords = imageFile.Keywords,
+                Title = imageMetadata.Title,
+                Description = imageMetadata.Description,
+                DateTime = imageMetadata.DateTime,
+                Location = imageMetadata.Location,
+                CopyrightInformation = imageMetadata.CopyrightInformation,
+                Keywords = imageMetadata.Keywords,
                 ImageIdentifier = Guid.NewGuid().ToString(),
             };
 
 
-            await imageMetadataRepository.Create(imageMetadata);
+            await imageMetadataRepository.Create(updatedImageMetadata);
 
             return Results.Ok();
         }

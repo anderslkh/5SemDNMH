@@ -17,11 +17,11 @@ namespace WebApp.Service
             _httpClient = new HttpClient();
         }
 
-        public async Task<string> UploadImage(ImageFile imageFile)
+        public async Task<string> UploadImage(ImageMetadata imageMetadata)
         {
             _httpClient.BaseAddress = new Uri(restUrl);
 
-            HttpResponseMessage response = await _httpClient.PostAsJsonAsync(restUrl, imageFile);
+            HttpResponseMessage response = await _httpClient.PostAsJsonAsync(restUrl, imageMetadata);
 
             if (response.IsSuccessStatusCode)
             {
