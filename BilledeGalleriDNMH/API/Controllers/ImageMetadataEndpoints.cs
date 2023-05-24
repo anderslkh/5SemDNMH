@@ -19,29 +19,13 @@ namespace API.Controllers
 
         static async Task<IResult> Create([FromBody] ImageMetadata imageMetadata)
         {
-            ImagaMetadataLogic imageMetadataLogic = new();
-
             ImageMetadataRepository imageMetadataRepository = new ImageMetadataRepository();
 
-            var imageWithMetadata = imageMetadataLogic.ExtractMetaDataFromByte(imageMetadata.Image);
+            var imageUpdated = ImageMetadataEditor.UpdateExifMetadata(imageMetadata.Image, imageMetadata.Title, imageMetadata.Description, imageMetadata.CopyrightInformation, imageMetadata.Keywords);
 
-            var imageUpdated = ImageMetadataEditor.UpdateExifMetadata(imageMetadata.Image, imageMetadata.Title, imageWithMetadata.Description, imageMetadata.CopyrightInformation, imageMetadata.Keywords);
+            imageMetadata.Image = imageUpdated; 
 
-            //løsning lav nogle af variabler noget man SKAL udfylde.
-            ImageMetadata updatedImageMetadata = new ImageMetadata 
-            { 
-                Image = imageUpdated,
-                Title = imageMetadata.Title,
-                Description = imageMetadata.Description,
-                DateTime = imageMetadata.DateTime,
-                Location = imageMetadata.Location,
-                CopyrightInformation = imageMetadata.CopyrightInformation,
-                Keywords = imageMetadata.Keywords,
-                ImageIdentifier = Guid.NewGuid().ToString(),
-            };
-
-
-            await imageMetadataRepository.Create(updatedImageMetadata);
+            await imageMetadataRepository.Create(imageMetadata);
 
             return Results.Ok();
         }
