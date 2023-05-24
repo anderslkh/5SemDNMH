@@ -20,24 +20,41 @@ namespace API.Controllers
         static async Task<IResult> Create([FromBody] ImageMetadata imageMetadata)
         {
             ImageMetadataRepository imageMetadataRepository = new ImageMetadataRepository();
-
-            var imageUpdated = ImageMetadataEditor.UpdateExifMetadata(imageMetadata.Image, imageMetadata.Title, 
+            try
+            {
+                var imageUpdated = ImageMetadataEditor.UpdateExifMetadata(imageMetadata.Image, imageMetadata.Title,
                 imageMetadata.Description, imageMetadata.CopyrightInformation, imageMetadata.Keywords);
 
-            imageMetadata.Image = imageUpdated; 
+                imageMetadata.Image = imageUpdated;
 
-            await imageMetadataRepository.Create(imageMetadata);
+                await imageMetadataRepository.Create(imageMetadata);
 
-            return Results.Ok();
+                return Results.Ok();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
         static async Task<List<ImageMetadata>> GetMany([AsParameters] ImageMetadataQueryParameters imageMetadataQuery)
         {
             ImageMetadataRepository imageMetadataRepository = new();
 
-            List<ImageMetadata> result = await imageMetadataRepository.ReadMany(imageMetadataQuery);
+            try
+            {
+                List<ImageMetadata> result = await imageMetadataRepository.ReadMany(imageMetadataQuery);
 
-            return result;
+                return result;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
     }
 }
