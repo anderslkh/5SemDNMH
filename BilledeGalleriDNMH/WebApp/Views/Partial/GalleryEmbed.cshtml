@@ -23,10 +23,16 @@
             </div>
         }
     </div>
+    <div class="input-group mt-3">
+        <form asp-controller="GalleryController" asp-action="CreateGallery" method="post">
+            <input type="text" class="form-control" name="name">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
 
-    @*<button id="copyButton" type="button" onclick="copyGallery()" class="btn btn-primary">Copy Gallery</button>*@
 </div>
 
+    @*<button id="copyButton" type="button" onclick="copyGallery()" class="btn btn-primary">Copy Gallery</button>*@
 @*<script>
     function copyGallery() {
         // Select the gallery container
