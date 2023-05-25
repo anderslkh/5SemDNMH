@@ -3,27 +3,27 @@ using Newtonsoft.Json;
 
 namespace WebApp.Service
 {
-    public class UserService
+    public class GalleryService
     {
         private readonly HttpClient _httpClient;
-        private static readonly string restUrl = "https://localhost:7107/User/";
+        private static readonly string restUrl = "https://localhost:7107/Gallery/";
 
-        public UserService()
+        public GalleryService() 
         {
             _httpClient = new HttpClient();
         }
 
-        public async Task<string> CreateUser(string email, string password)
+        public async Task<string> CreateGallery(string name, List<ImageObject> imageObjects)
         {
             _httpClient.BaseAddress = new Uri(restUrl);
 
-            User user = new User
+            Gallery gallery = new Gallery
             {
-                Email = email,
-                Password = password
+                Name = name,
+                ImageObjects = imageObjects
             };
 
-            var response = await _httpClient.PostAsJsonAsync(restUrl, user);
+            var response = await _httpClient.PostAsJsonAsync(restUrl, gallery);
 
             if (response.IsSuccessStatusCode)
             {
@@ -33,31 +33,29 @@ namespace WebApp.Service
             else
             {
                 throw new Exception($"API call failed with status code {response.StatusCode}");
-            };
+            }
         }
 
-        public async Task<User> ReadOne(string email)
+        public async Task<Gallery> ReadOne(string name)
         {
-            var url = $"https://localhost:7107/User&email={email}";
-            User user = null;
+            var url = $"https://localhost:7107/Gallery&name={name}";
+            Gallery gallery = null;
 
             try
             {
                 var response = await _httpClient.GetAsync(url);
-                if (response.IsSuccessStatusCode)
+                if (response.IsSuccessStatusCode) 
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    var documents = JsonConvert.DeserializeObject<User>(content);
-                    user = documents;
+                    var documents = JsonConvert.DeserializeObject<Gallery>(content);
+                    gallery = documents;
                 }
             }
             catch (BadHttpRequestException ex)
             {
                 throw ex;
             }
-
-            return user;
-
+            return gallery;
         }
     }
 }

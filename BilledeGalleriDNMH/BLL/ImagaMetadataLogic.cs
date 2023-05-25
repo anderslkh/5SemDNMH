@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Models;
+﻿using Models;
 using System.Drawing;
 using System.Globalization;
-using System.IO;
 using System.Text;
 
 namespace BLL
@@ -25,7 +23,7 @@ namespace BLL
                     Keywords = GetKeywordsFromImage(image) ?? new string[] { "" }
                 };
 
-            return metadata;
+                return metadata;
             }
         }
 
@@ -77,7 +75,7 @@ namespace BLL
         {
             try
             {
-                return GetPropertyString(image, 0x927c);    
+                return GetPropertyString(image, 0x927c);
             }
             catch
             {

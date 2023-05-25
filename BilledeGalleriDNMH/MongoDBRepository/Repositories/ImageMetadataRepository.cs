@@ -1,12 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.Extensions.Options;
-using Models;
+﻿using Models;
 using MongoDB.Driver;
-using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
-using static System.Net.Mime.MediaTypeNames;
-using System;
-using MongoDB.Bson;
 
 namespace MongoDBRepository.Repositories
 {
@@ -32,7 +25,7 @@ namespace MongoDBRepository.Repositories
 
         public async Task<bool> Delete(Guid id)
         {
-            FilterDefinition<ImageMetadata> filter = Builders<ImageMetadata>.Filter.Eq(T => T.Id, id);
+            FilterDefinition<ImageMetadata> filter = Builders<ImageMetadata>.Filter.Eq(imageMetadata => imageMetadata.Id, id);
             DeleteResult result = await collection.DeleteOneAsync(filter);
             return result.DeletedCount != 0;
         }
@@ -103,15 +96,15 @@ namespace MongoDBRepository.Repositories
                     filter &= filterBuilder.Eq(imageMetadata => imageMetadata.Keywords, queryParameters.Keywords);
                 }
             }
-            
+
             return filter;
         }
 
-        protected virtual SortDefinition<ImageMetadata> CreateSortDefinition(BaseQueryParameters? sortObject) 
+        protected virtual SortDefinition<ImageMetadata> CreateSortDefinition(BaseQueryParameters? sortObject)
         {
             SortDefinitionBuilder<ImageMetadata> builder = Builders<ImageMetadata>.Sort;
 
-            var sort = builder.Ascending(T => T.Id);
+            var sort = builder.Ascending(imageMetadata => imageMetadata.Id);
 
             return sort;
         }

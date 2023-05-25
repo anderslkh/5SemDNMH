@@ -1,7 +1,6 @@
 ﻿using BLL;
 using Microsoft.AspNetCore.Mvc;
 using Models;
-using MongoDB.Bson;
 using MongoDBRepository.Repositories;
 
 namespace API.Controllers
@@ -14,12 +13,12 @@ namespace API.Controllers
             application.MapPost("/user", Create);
         }
 
-        static async Task<IResult> Create([FromBody] User recievedUser)
+        static async Task<IResult> Create([FromBody] User receivedUser)
         {
             PasswordLogic passwordLogic = new PasswordLogic();
             UserRepository userRepository = new();
 
-            User hashedUser = passwordLogic.HashPassword(recievedUser);
+            User hashedUser = passwordLogic.HashPassword(receivedUser);
 
             await userRepository.Create(hashedUser);
 

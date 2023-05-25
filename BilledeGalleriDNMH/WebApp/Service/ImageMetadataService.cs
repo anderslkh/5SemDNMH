@@ -1,8 +1,5 @@
 ﻿using Models;
-//using MongoDB.Bson.Serialization;
-//using MongoDB.Bson;
 using MongoDB.Driver;
-//using MongoDB.Bson.IO;
 using Newtonsoft.Json;
 
 namespace WebApp.Service
@@ -45,11 +42,11 @@ namespace WebApp.Service
         {
             List<ImageMetadata> foundImageMetadata = null;
             string useUrl = GetCustomUrl(
-                title, 
-                description, 
-                dateTime, 
-                location, 
-                copyrightInformation, 
+                title,
+                description,
+                dateTime,
+                location,
+                copyrightInformation,
                 keywords,
                 imageIdentifier);
 
@@ -57,10 +54,10 @@ namespace WebApp.Service
             try
             {
                 var response = await _httpClient.GetAsync(uri);
-                if (response.IsSuccessStatusCode) 
+                if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    var documents = JsonConvert.DeserializeObject<List<ImageMetadata>>(content); 
+                    var documents = JsonConvert.DeserializeObject<List<ImageMetadata>>(content);
                     foundImageMetadata = documents.ToList();
                 }
             }
@@ -72,11 +69,11 @@ namespace WebApp.Service
         }
 
         public string GetCustomUrl(
-            string? title = null, 
-            string? description = null, 
-            DateTime? dateTime = null, 
-            string? location = null, 
-            string? copyrightInformation = null, 
+            string? title = null,
+            string? description = null,
+            DateTime? dateTime = null,
+            string? location = null,
+            string? copyrightInformation = null,
             string[]? keywords = null,
             string imageIdentifier = null)
         {

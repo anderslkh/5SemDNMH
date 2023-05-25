@@ -1,6 +1,4 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-
-namespace Models
+﻿namespace Models
 {
     public class ImageMetadata : Entity
     {
@@ -24,5 +22,5 @@ namespace Models
         public string? Location { get; set; }
         public string? CopyrightInformation { get; set; }
         public string[]? Keywords { get; set; }
-    } 
+    }
 }

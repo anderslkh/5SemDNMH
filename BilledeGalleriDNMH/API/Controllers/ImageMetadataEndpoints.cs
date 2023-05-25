@@ -1,10 +1,7 @@
 ﻿using BLL;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using Models;
-using MongoDBRepository;
 using MongoDBRepository.Repositories;
-using System;
 
 namespace API.Controllers
 {
@@ -36,7 +33,7 @@ namespace API.Controllers
 
                 throw;
             }
-            
+
         }
 
         static async Task<List<ImageMetadata>> GetMany([AsParameters] ImageMetadataQueryParameters imageMetadataQuery)
@@ -54,7 +51,7 @@ namespace API.Controllers
 
                 throw;
             }
-            
+
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using BLL;
-using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
@@ -17,7 +16,7 @@ namespace API.Controllers
             try
             {
                 var tokenString = await jWTLogic.GenerateJwt(email, password);
-                return tokenString ;
+                return tokenString;
             }
             catch (Exception ex)
             {

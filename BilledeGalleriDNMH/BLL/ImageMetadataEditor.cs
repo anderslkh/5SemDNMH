@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BLL
 {
@@ -16,7 +12,7 @@ namespace BLL
             // Load the image from the byte array
             Image image;
             using MemoryStream ms = new MemoryStream(imageBytes);
-            image = Image.FromStream(ms);     
+            image = Image.FromStream(ms);
 
             // Set the desired EXIF data
             SetPropertyItemString(image, 0x9C9B, "Title", Encoding.UTF8.GetBytes(imageTitle)); //Byte

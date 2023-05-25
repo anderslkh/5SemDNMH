@@ -1,10 +1,5 @@
 ﻿using Models;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MongoDBRepository.Repositories
 {
@@ -30,14 +25,14 @@ namespace MongoDBRepository.Repositories
 
         public async Task<bool> Delete(string email)
         {
-            FilterDefinition<User> filter = Builders<User>.Filter.Eq(T => T.Email, email);
+            FilterDefinition<User> filter = Builders<User>.Filter.Eq(user => user.Email, email);
             DeleteResult result = await collection.DeleteOneAsync(filter);
             return result.DeletedCount != 0;
         }
 
         public async Task<User> ReadOne(string email)
         {
-            FilterDefinition<User> filter = Builders<User>.Filter.Eq(T => T.Email, email);
+            FilterDefinition<User> filter = Builders<User>.Filter.Eq(user => user.Email, email);
 
             List<User> resultList = await collection.Find(filter).ToListAsync();
 
