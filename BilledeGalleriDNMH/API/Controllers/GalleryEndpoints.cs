@@ -10,7 +10,7 @@ namespace API.Controllers
         public static void AddGalleryEndpoints(this WebApplication application)
         {
             application.MapGet("/gallery", ReadOne);
-            application.MapPost("/user", Create);
+            application.MapPost("/gallery", Create);
         }
 
         static async Task<IResult> Create([FromBody] Gallery gallery)

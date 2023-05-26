@@ -57,9 +57,9 @@ namespace WebApp.Controllers
                     Keywords = imageFile.Keywords.Split(",").Select(x => x.Trim()).ToArray()
                 };
 
-                ImageMetadataService imageMetadataService = new();
+                //ImageMetadataService imageMetadataService = new();
 
-                await imageMetadataService.UploadImage(imageMetadata);
+                await _imageMetadataService.UploadImage(imageMetadata);
             }
 
             return View("index");
@@ -68,12 +68,12 @@ namespace WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Images(string title, string description, string dateTime, string location, string copyrightInformation, string keywords)
         {
-            ImageMetadataService metadataService = new();
+            //ImageMetadataService metadataService = new();
 
             string[] keywordArray = ConvertKeywordsToArray(keywords);
             DateTime? dateTimeValue = ConvertStringToDateTime(dateTime);
 
-            List<ImageMetadata> images = await metadataService.GetImageMetadata(title, description, dateTimeValue, location, copyrightInformation, keywordArray);
+            List<ImageMetadata> images = await _imageMetadataService.GetImageMetadata(title, description, dateTimeValue, location, copyrightInformation, keywordArray);
 
             List<ImageObject> imageObjects = new List<ImageObject>();
 
@@ -87,7 +87,7 @@ namespace WebApp.Controllers
 
         public async Task<IActionResult> MoveToGallery(string[] selectedImages, string title, string description, string dateTime, string location, string copyrightInformation, string keywords)
         {
-            ImageMetadataService metadataService = new();
+            //ImageMetadataService metadataService = new();
 
             string[] keywordArray = ConvertKeywordsToArray(keywords);
             DateTime? dateTimeValue = ConvertStringToDateTime(dateTime);
@@ -96,7 +96,7 @@ namespace WebApp.Controllers
 
             foreach (string imageId in selectedImages)
             {
-                var imageMetadatas = await metadataService.GetImageMetadata(title, description, dateTimeValue, location, copyrightInformation, keywordArray, imageId);
+                var imageMetadatas = await _imageMetadataService.GetImageMetadata(title, description, dateTimeValue, location, copyrightInformation, keywordArray, imageId);
                 var imageMetadata = imageMetadatas.First();
 
                 ImageObject imageObject = ConvertBytesToImage(imageMetadata.Image, imageMetadata.Title, imageMetadata.Description, imageMetadata.ImageIdentifier);

@@ -24,16 +24,28 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        [Route("[controller]CreateGallery")]
-        public async Task<ActionResult> CreateGallery(string name, List<ImageObject> imageObjects)
+        [Route("[controller]/CreateGallery")]
+        public async Task<ActionResult> CreateGallery(string galleryName, List<ImageObject> imageObjects)
         {
 
-            if (name != null && imageObjects != null) 
+            if (galleryName != null && imageObjects != null) 
             {
-                await _galleryService.CreateGallery(name, imageObjects);
+                await _galleryService.CreateGallery(galleryName, imageObjects);
             }
 
-            return View("index");
+            return RedirectToAction("Index", "Home");
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> ReadOne(string galleryName)
+        {
+            Gallery gallery = await _galleryService.ReadOne(galleryName);
+
+            List<ImageObject> imageObjects = gallery.ImageObjects;
+
+            return View("Gallery", imageObjects);
+        }
+
     }
 }

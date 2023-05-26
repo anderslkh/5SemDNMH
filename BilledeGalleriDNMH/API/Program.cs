@@ -53,6 +53,7 @@ if (app.Environment.IsDevelopment())
 app.AddImageMetaDataEndpoints();
 app.AddLoginEndpoints();
 app.AddUserEndpoints();
+app.AddGalleryEndpoints();
 
 app.UseHttpsRedirection();
 

@@ -36,9 +36,9 @@ namespace WebApp.Service
             }
         }
 
-        public async Task<Gallery> ReadOne(string name)
+        public async Task<Gallery> ReadOne(string galleryName)
         {
-            var url = $"https://localhost:7107/Gallery&name={name}";
+            var url = $"https://localhost:7107/Gallery&name={galleryName}";
             Gallery gallery = null;
 
             try

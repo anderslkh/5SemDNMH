@@ -7,7 +7,6 @@
 @model List<ImageObject>
 @using Models
 
-
 <div class="gallery-embed">
     <div class="row row-cols-1 row-cols-md-2 g-4">
         @foreach (var image in Model)
@@ -23,12 +22,15 @@
             </div>
         }
     </div>
-    <div class="input-group mt-3">
-        <form asp-controller="GalleryController" asp-action="CreateGallery" method="post">
-            <input type="text" class="form-control" name="name">
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-    </div>
+
+    <form asp-controller="Gallery" asp-action="CreateGallery" method="post">
+        <div class="input-group mt-3">
+            <h5>Give gallery name:</h5>
+            <input type="text" class="form-control" name="galleryName">
+            <input type="hidden" name="imageObjects" value='@Json.Serialize(Model)' />
+            <button type="submit" class="btn btn-primary">Save Gallery</button>
+        </div>
+    </form>
 
 </div>
 
