@@ -1,18 +1,40 @@
 ﻿@model List<ImageObject>
 @using Models
+@{
+    string galleryname = "boama";
+}
+
+<h1> gallery</h1>
 
 <div class="row row-cols-1 row-cols-md-2 g-4">
-    <a>boama</a>
-    @foreach (var image in Model)
+    <a id="first-link">boama</a>
+    @if (Model != null)
     {
-        <div class="col">
-            <div class="card">
-                <img src="@($"data:image/jpeg;base64,{Convert.ToBase64String(image.Data)}")" class="card-img-top" alt="@image.ImageTitle" >
-                <div class="card-body">
-                    <h5 class="card-title">@image.ImageTitle</h5>
-                    <p class="card-text">@image.ImageDescription</p>
+        @foreach (var image in Model)
+        {
+            <div class="col">
+                <div class="card">
+                    <img src="@($"data:image/jpeg;base64,{Convert.ToBase64String(image.Data)}")" class="card-img-top" alt="@image.ImageTitle" >
+                    <div class="card-body">
+                        <h5 class="card-title">@image.ImageTitle</h5>
+                        <p class="card-text">@image.ImageDescription</p>
+                    </div>
                 </div>
             </div>
-        </div>
+        }        
     }
 </div>
+
+@section scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Wait for the page to finish loading
+        $(document).ready(function () {
+            // Get the text of the first <a> element
+            var firstLinkText = $('#first-link').text();
+
+            // Call the ReadOne method on the GalleryController
+            $.get('/Gallery/ReadOne/'+@galleryname);
+        });
+    </script>
+}

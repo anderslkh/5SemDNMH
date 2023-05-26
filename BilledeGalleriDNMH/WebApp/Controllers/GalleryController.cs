@@ -38,13 +38,23 @@ namespace WebApp.Controllers
 
 
         [HttpGet]
+        [Route("[controller]/Gallery/{galleryname}")]
         public async Task<IActionResult> ReadOne(string galleryName)
         {
             Gallery gallery = await _galleryService.ReadOne(galleryName);
 
+            var name = gallery.Name;
             List<ImageObject> imageObjects = gallery.ImageObjects;
 
             return View("Gallery", imageObjects);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Galleries()
+        {
+            List<Gallery> galleries = await _galleryService.ReadMany();
+
+            return View(galleries);
         }
 
     }

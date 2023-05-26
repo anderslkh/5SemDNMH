@@ -1,5 +1,7 @@
 ﻿using Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
+using System.Xml.Linq;
 
 namespace MongoDBRepository.Repositories
 {
@@ -37,6 +39,12 @@ namespace MongoDBRepository.Repositories
             }
 
             return result;
+        }
+
+        public async Task<List<Gallery>> ReadMany()
+        {
+            var documents = await collection.Find(new BsonDocument()).ToListAsync();
+            return documents;
         }
 
         public async Task<bool> Delete(string name)

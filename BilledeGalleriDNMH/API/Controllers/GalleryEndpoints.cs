@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using MongoDBRepository.Repositories;
+using System.Xml.Linq;
 
 namespace API.Controllers
 {
@@ -9,8 +10,9 @@ namespace API.Controllers
     {
         public static void AddGalleryEndpoints(this WebApplication application)
         {
-            application.MapGet("/gallery", ReadOne);
-            application.MapPost("/gallery", Create);
+            application.MapPost("/Gallery", Create);
+            application.MapGet("/Gallery", ReadOne);
+            application.MapGet("/Galleries", ReadMany);
         }
 
         static async Task<IResult> Create([FromBody] Gallery gallery)
@@ -36,6 +38,15 @@ namespace API.Controllers
             Gallery gallery = await galleryRepository.ReadOne(name);
 
             return gallery;
+        }
+
+        static async Task<List<Gallery>> ReadMany()
+        {
+            GalleryRepository galleryRepository = new GalleryRepository();
+
+            List<Gallery> galleryList = await galleryRepository.ReadMany();
+
+            return galleryList;
         }
     }
 }

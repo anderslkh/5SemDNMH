@@ -31,6 +31,11 @@ namespace WebApp.Controllers
             return View();
         }
 
+        public IActionResult Gallery()
+        {
+            return View();
+        }
+
         [HttpPost]
         [Route("[controller]/UploadAsync")]
         public async Task<ActionResult> UploadAsync(ImageFormFile imageFile)

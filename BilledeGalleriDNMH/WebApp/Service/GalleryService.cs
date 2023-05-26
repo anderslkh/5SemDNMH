@@ -57,5 +57,27 @@ namespace WebApp.Service
             }
             return gallery;
         }
+
+        public async Task<List<Gallery>> ReadMany()
+        {
+            var url = $"https://localhost:7107/Galleries";
+            List<Gallery> galleries = null;
+
+            try
+            {
+                var response = await _httpClient.GetAsync(url);
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var documents = JsonConvert.DeserializeObject<List<Gallery>>(content);
+                    galleries = documents;
+                }
+            }
+            catch (BadHttpRequestException ex)
+            {
+                throw ex;
+            }
+            return galleries;
+        }
     }
 }

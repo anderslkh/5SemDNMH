@@ -17,7 +17,7 @@ namespace API.Controllers
         {
             PasswordLogic passwordLogic = new PasswordLogic();
             UserRepository userRepository = new();
-
+    
             User hashedUser = passwordLogic.HashPassword(receivedUser);
 
             await userRepository.Create(hashedUser);
