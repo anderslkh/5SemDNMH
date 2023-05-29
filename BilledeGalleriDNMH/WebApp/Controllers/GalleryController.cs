@@ -67,7 +67,7 @@ namespace WebApp.Controllers
             {
                 imageObjects.Add(Converters.ConvertBytesToImage(image.Image, image.Title, image.Description, image.ImageIdentifier));
             }
-
+             //todo returner korrekt view
             return null;
 
         }
