@@ -31,6 +31,28 @@ namespace WebApp.Service
             };
         }
 
+        public async Task<List<ImageMetadata>> GetImagesFromIds(string imageIds)
+        {
+            var url = $"https://localhost:7107/imageMetadatasFromId?imageIds={imageIds}";
+            List<ImageMetadata> result = null;
+            try
+            {
+                var response = await _httpClient.GetAsync(url);
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var documents = JsonConvert.DeserializeObject<List<ImageMetadata>>(content);
+                    result = documents;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return result;
+        }
+
         public async Task<List<ImageMetadata>> GetImageMetadata(
             string? title = null,
             string? description = null,

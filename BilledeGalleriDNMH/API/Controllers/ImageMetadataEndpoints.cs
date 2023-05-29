@@ -12,6 +12,7 @@ namespace API.Controllers
         {
             application.MapPost("/imageMetadatas", Create);
             application.MapGet("/imageMetadatas", GetMany);
+            application.MapGet("/imageMetadatasFromId", GetManyFromId);
         }
 
         static async Task<IResult> Create([FromBody] ImageMetadata imageMetadata)
@@ -23,6 +24,7 @@ namespace API.Controllers
                 imageMetadata.Description, imageMetadata.CopyrightInformation, imageMetadata.Keywords);
 
                 imageMetadata.Image = imageUpdated;
+                imageMetadata.ImageIdentifier = Guid.NewGuid().ToString();
 
                 await imageMetadataRepository.Create(imageMetadata);
 
@@ -52,6 +54,22 @@ namespace API.Controllers
                 throw;
             }
 
+        }
+
+        static async Task<List<ImageMetadata>> GetManyFromId(string imageIds)
+        {
+            ImageMetadataRepository imageMetadataRepository = new();
+            try
+            {
+                List<ImageMetadata> result = await imageMetadataRepository.ReadManyFromId(imageIds);
+
+                return result;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

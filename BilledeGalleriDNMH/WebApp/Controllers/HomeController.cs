@@ -2,6 +2,7 @@
 using Models;
 using System.Diagnostics;
 using System.Drawing;
+using WebApp.Helpers;
 using WebApp.Models;
 using WebApp.Service;
 using static System.Net.Mime.MediaTypeNames;
@@ -62,8 +63,6 @@ namespace WebApp.Controllers
                     Keywords = imageFile.Keywords.Split(",").Select(x => x.Trim()).ToArray()
                 };
 
-                //ImageMetadataService imageMetadataService = new();
-
                 await _imageMetadataService.UploadImage(imageMetadata);
             }
 
@@ -73,10 +72,8 @@ namespace WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Images(string title, string description, string dateTime, string location, string copyrightInformation, string keywords)
         {
-            //ImageMetadataService metadataService = new();
-
-            string[] keywordArray = ConvertKeywordsToArray(keywords);
-            DateTime? dateTimeValue = ConvertStringToDateTime(dateTime);
+            string[] keywordArray = Converters.ConvertKeywordsToArray(keywords);
+            DateTime? dateTimeValue = Converters.ConvertStringToDateTime(dateTime);
 
             List<ImageMetadata> images = await _imageMetadataService.GetImageMetadata(title, description, dateTimeValue, location, copyrightInformation, keywordArray);
 
@@ -84,7 +81,7 @@ namespace WebApp.Controllers
 
             foreach (var image in images)
             {
-                imageObjects.Add(ConvertBytesToImage(image.Image, image.Title, image.Description, image.ImageIdentifier));
+                imageObjects.Add(Converters.ConvertBytesToImage(image.Image, image.Title, image.Description, image.ImageIdentifier));
             }
 
             return View("Images", imageObjects);
@@ -92,10 +89,8 @@ namespace WebApp.Controllers
 
         public async Task<IActionResult> MoveToGallery(string[] selectedImages, string title, string description, string dateTime, string location, string copyrightInformation, string keywords)
         {
-            //ImageMetadataService metadataService = new();
-
-            string[] keywordArray = ConvertKeywordsToArray(keywords);
-            DateTime? dateTimeValue = ConvertStringToDateTime(dateTime);
+            string[] keywordArray = Converters.ConvertKeywordsToArray(keywords);
+            DateTime? dateTimeValue = Converters.ConvertStringToDateTime(dateTime);
 
             List<ImageObject> galleryImages = new List<ImageObject>();
 
@@ -104,65 +99,14 @@ namespace WebApp.Controllers
                 var imageMetadatas = await _imageMetadataService.GetImageMetadata(title, description, dateTimeValue, location, copyrightInformation, keywordArray, imageId);
                 var imageMetadata = imageMetadatas.First();
 
-                ImageObject imageObject = ConvertBytesToImage(imageMetadata.Image, imageMetadata.Title, imageMetadata.Description, imageMetadata.ImageIdentifier);
+                ImageObject imageObject = Converters.ConvertBytesToImage(imageMetadata.Image, imageMetadata.Title, imageMetadata.Description, imageMetadata.ImageIdentifier);
                 galleryImages.Add(imageObject);
             }
 
             return View("GalleryEmbedTest", galleryImages);
         }
 
-        private ImageObject ConvertBytesToImage(byte[] data, string title, string description, string id)
-        {
-            if (data == null)
-            {
-                return null;
-            }
-            else
-            {
-                using (var ms = new MemoryStream(data))
-                {
-                    var image = System.Drawing.Image.FromStream(ms);
 
-                    return new ImageObject
-                    {
-                        Data = data,
-                        Base64 = Convert.ToBase64String(data),
-                        Object = image,
-                        ImageTitle = title,
-                        ImageDescription = description,
-                        Id = id,
-                    };
-                }
-            }
-        }
-
-        private string[] ConvertKeywordsToArray(string keywords)
-        {
-            if (string.IsNullOrWhiteSpace(keywords))
-            {
-                return new string[0];
-            }
-            else
-            {
-                return keywords.Split(',').Select(k => k.Trim()).ToArray();
-            }
-        }
-
-        private DateTime? ConvertStringToDateTime(string dateTimeString)
-        {
-            if (string.IsNullOrWhiteSpace(dateTimeString))
-            {
-                return null;
-            }
-            else if (DateTime.TryParse(dateTimeString, out DateTime dateTime))
-            {
-                return dateTime;
-            }
-            else
-            {
-                return null;
-            }
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

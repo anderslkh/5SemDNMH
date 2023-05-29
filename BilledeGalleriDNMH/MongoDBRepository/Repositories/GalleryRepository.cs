@@ -25,9 +25,9 @@ namespace MongoDBRepository.Repositories
             await collection.InsertOneAsync(gallery);
         }
 
-        public async Task<Gallery> ReadOne(string name)
+        public async Task<Gallery> ReadOne(string galleryName)
         {
-            FilterDefinition<Gallery> filter = Builders<Gallery>.Filter.Eq(gallery => gallery.Name, name);
+            FilterDefinition<Gallery> filter = Builders<Gallery>.Filter.Eq(gallery => gallery.GalleryName, galleryName);
 
             List<Gallery> resultList = await collection.Find(filter).ToListAsync();
 
@@ -47,9 +47,9 @@ namespace MongoDBRepository.Repositories
             return documents;
         }
 
-        public async Task<bool> Delete(string name)
+        public async Task<bool> Delete(string galleryName)
         {
-            FilterDefinition<Gallery> filter = Builders<Gallery>.Filter.Eq(gallery => gallery.Name, name);
+            FilterDefinition<Gallery> filter = Builders<Gallery>.Filter.Eq(gallery => gallery.GalleryName, galleryName);
             DeleteResult result = await collection.DeleteOneAsync(filter);
             return result.DeletedCount != 0;
         }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Models;
+using WebApp.Helpers;
 using WebApp.Service;
 
 namespace WebApp.Controllers
@@ -8,13 +9,16 @@ namespace WebApp.Controllers
     {
         private readonly ILogger<GalleryController> _logger;
         private readonly GalleryService _galleryService;
+        private readonly ImageMetadataService _imageMetadataService;
 
         public GalleryController(
             ILogger<GalleryController> logger,
-            GalleryService galleryService)
+            GalleryService galleryService,
+            ImageMetadataService imageMetadataService)
         {
             _logger = logger;
             _galleryService = galleryService;
+            _imageMetadataService = imageMetadataService;
         }
 
 
@@ -25,12 +29,13 @@ namespace WebApp.Controllers
 
         [HttpPost]
         [Route("[controller]/CreateGallery")]
-        public async Task<ActionResult> CreateGallery(string galleryName, List<ImageObject> imageObjects)
+        public async Task<ActionResult> CreateGallery(string galleryName, string imageIdsSingleString)
         {
+            List<string> imageIds = imageIdsSingleString.Split(',').ToList();
 
-            if (galleryName != null && imageObjects != null) 
+            if (galleryName != null && imageIdsSingleString != null) 
             {
-                await _galleryService.CreateGallery(galleryName, imageObjects);
+                await _galleryService.CreateGallery(galleryName, imageIds);
             }
 
             return RedirectToAction("Index", "Home");
@@ -43,10 +48,28 @@ namespace WebApp.Controllers
         {
             Gallery gallery = await _galleryService.ReadOne(galleryName);
 
-            var name = gallery.Name;
-            List<ImageObject> imageObjects = gallery.ImageObjects;
 
-            return View("Gallery", imageObjects);
+
+            var name = gallery.GalleryName;
+            List<string> imageIds = gallery.ImageIds;
+
+            return View("Gallery", imageIds);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetImagesFromIds(string imageIds)
+        {
+            List<ImageMetadata> imageMetadatas = await _imageMetadataService.GetImagesFromIds(imageIds);
+
+            List<ImageObject> imageObjects = new List<ImageObject>();
+
+            foreach (var image in imageMetadatas)
+            {
+                imageObjects.Add(Converters.ConvertBytesToImage(image.Image, image.Title, image.Description, image.ImageIdentifier));
+            }
+
+            return null;
+
         }
 
         [HttpGet]

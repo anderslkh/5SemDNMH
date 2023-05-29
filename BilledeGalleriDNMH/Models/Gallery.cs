@@ -2,7 +2,7 @@
 {
     public class Gallery : Entity
     {
-        public string Name { get; set; }
-        public List<ImageObject> ImageObjects { get; set; }
+        public string GalleryName { get; set; }
+        public List<string> ImageIds { get; set; }
     }
 }

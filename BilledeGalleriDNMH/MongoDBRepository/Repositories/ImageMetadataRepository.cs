@@ -41,6 +41,16 @@ namespace MongoDBRepository.Repositories
             return list;
         }
 
+        public async Task<List<ImageMetadata>> ReadManyFromId(string imageIds)
+        {
+            List<string> imageIdsList = imageIds.Split(',').ToList();
+
+            FilterDefinition<ImageMetadata> filter = Builders<ImageMetadata>.Filter.In(x => x.ImageIdentifier, imageIdsList);
+            List<ImageMetadata> metadataList = await collection.Find(filter).ToListAsync();
+
+            return metadataList;
+        }
+
         public static FilterDefinition<ImageMetadata> CreateFilterDefinition(BaseQueryParameters? filterObject)
         {
             FilterDefinitionBuilder<ImageMetadata> filterBuilder = Builders<ImageMetadata>.Filter;
@@ -108,6 +118,5 @@ namespace MongoDBRepository.Repositories
 
             return sort;
         }
-
     }
 }

@@ -13,14 +13,14 @@ namespace WebApp.Service
             _httpClient = new HttpClient();
         }
 
-        public async Task<string> CreateGallery(string name, List<ImageObject> imageObjects)
+        public async Task<string> CreateGallery(string galleryName, List<string> imageIds)
         {
             _httpClient.BaseAddress = new Uri(restUrl);
 
             Gallery gallery = new Gallery
             {
-                Name = name,
-                ImageObjects = imageObjects
+                GalleryName = galleryName,
+                ImageIds = imageIds
             };
 
             var response = await _httpClient.PostAsJsonAsync(restUrl, gallery);
@@ -57,6 +57,12 @@ namespace WebApp.Service
             }
             return gallery;
         }
+
+        //public async Task<List<ImageObject>> GetImagesFromIds(List<string> imageIds)
+        //{
+
+        //    return null;
+        //}
 
         public async Task<List<Gallery>> ReadMany()
         {
