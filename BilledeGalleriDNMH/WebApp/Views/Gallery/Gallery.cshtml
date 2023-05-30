@@ -1,13 +1,9 @@
 ﻿@model List<ImageObject>
 @using Models
-@{
-    string galleryname = "boama";
-}
 
-<h1> gallery</h1>
+<h1> Gallery</h1>
 
 <div class="row row-cols-1 row-cols-md-2 g-4">
-    <a id="first-link">boama</a>
     @if (Model != null)
     {
         @foreach (var image in Model)
@@ -24,17 +20,3 @@
         }        
     }
 </div>
-
-@section scripts {
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        // Wait for the page to finish loading
-        $(document).ready(function () {
-            // Get the text of the first <a> element
-            var firstLinkText = $('#first-link').text();
-
-            // Call the ReadOne method on the GalleryController
-            $.get('/Gallery/ReadOne/'+@galleryname);
-        });
-    </script>
-}

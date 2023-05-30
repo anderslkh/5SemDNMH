@@ -7,6 +7,10 @@
 
 <h1>Galleries</h1>
 
+
+
+<hr>
+
 <div>
     <h4>Gallery</h4>
     <hr />
@@ -26,6 +30,10 @@
             </dt>
             <dd class = "col-sm-10">
                 @Html.DisplayFor(model => item.Id)
+            </dd>
+            <dt class="col-sm-2"></dt>
+            <dd class="col-sm-10">
+                @Html.ActionLink("Show Gallery", "Gallery", new { imageIds = string.Join(",", item.ImageIds) })
             </dd>
         </dl>
         }

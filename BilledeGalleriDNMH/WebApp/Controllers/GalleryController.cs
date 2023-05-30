@@ -42,22 +42,23 @@ namespace WebApp.Controllers
         }
 
 
+        //[HttpGet]
+        //[Route("[controller]/Gallery/{galleryname}")]
+        //public async Task<IActionResult> ReadOne(string galleryName)
+        //{
+        //    Gallery gallery = await _galleryService.ReadOne(galleryName);
+
+
+
+        //    var name = gallery.GalleryName;
+        //    List<string> imageIds = gallery.ImageIds;
+
+        //    return View("Gallery", imageIds);
+        //}
+
         [HttpGet]
-        [Route("[controller]/Gallery/{galleryname}")]
-        public async Task<IActionResult> ReadOne(string galleryName)
-        {
-            Gallery gallery = await _galleryService.ReadOne(galleryName);
-
-
-
-            var name = gallery.GalleryName;
-            List<string> imageIds = gallery.ImageIds;
-
-            return View("Gallery", imageIds);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetImagesFromIds(string imageIds)
+        [Route("[controller]/Gallery/")]
+        public async Task<IActionResult> Gallery(string imageIds)
         {
             List<ImageMetadata> imageMetadatas = await _imageMetadataService.GetImagesFromIds(imageIds);
 
@@ -68,8 +69,8 @@ namespace WebApp.Controllers
                 imageObjects.Add(Converters.ConvertBytesToImage(image.Image, image.Title, image.Description, image.ImageIdentifier));
             }
              //todo returner korrekt view
-            return null;
-
+            //return null;
+            return View(imageObjects);
         }
 
         [HttpGet]

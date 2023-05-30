@@ -58,12 +58,6 @@ namespace WebApp.Service
             return gallery;
         }
 
-        //public async Task<List<ImageObject>> GetImagesFromIds(List<string> imageIds)
-        //{
-
-        //    return null;
-        //}
-
         public async Task<List<Gallery>> ReadMany()
         {
             var url = $"https://localhost:7107/Galleries";

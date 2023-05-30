@@ -1,0 +1,35 @@
+﻿@using Models
+
+@{
+    ViewData["Title"] = "Upload Images";
+}
+
+<form asp-action="UploadAsync" enctype="multipart/form-data">
+    <div>
+        <label for="File">File:</label>
+        <input type="file" name="File" id="File" />
+    </div>
+    <div>
+        <label for="Title">Title:</label>
+        <input type="text" name="Title" id="Title" />
+    </div>
+    <div>
+        <label for="Description">Description:</label>
+        <input type="text" name="Description" id="Description" />
+    </div>
+    <div>
+        <label for="Lcoation">Location:</label>
+        <input type="text" name="Location" id="Location" />
+    </div>
+    <div>
+        <label for="CopyrightInformation">Copyright Information:</label>
+        <input type="text" name="CopyrightInformation" id="CopyrightInformation" />
+    </div>
+    <div>
+        <label for="Keywords">Keywords (separate with comma):</label>
+        <input type="text" name="Keywords" id="Keywords" />
+    </div>
+    <div>
+        <button type="submit">Upload</button>
+    </div>
+</form>
