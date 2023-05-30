@@ -38,23 +38,27 @@ namespace WebApp.Controllers
                 await _galleryService.CreateGallery(galleryName, imageIds);
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Galleries");
         }
 
+        public async Task<IActionResult> MoveToGallery(string[] selectedImages, string title, string description, string dateTime, string location, string copyrightInformation, string keywords)
+        {
+            string[] keywordArray = Converters.ConvertKeywordsToArray(keywords);
+            DateTime? dateTimeValue = Converters.ConvertStringToDateTime(dateTime);
 
-        //[HttpGet]
-        //[Route("[controller]/Gallery/{galleryname}")]
-        //public async Task<IActionResult> ReadOne(string galleryName)
-        //{
-        //    Gallery gallery = await _galleryService.ReadOne(galleryName);
+            List<ImageObject> galleryImages = new List<ImageObject>();
 
+            foreach (string imageId in selectedImages)
+            {
+                var imageMetadatas = await _imageMetadataService.GetImageMetadata(title, description, dateTimeValue, location, copyrightInformation, keywordArray, imageId);
+                var imageMetadata = imageMetadatas.First();
 
+                ImageObject imageObject = Converters.ConvertBytesToImage(imageMetadata.Image, imageMetadata.Title, imageMetadata.Description, imageMetadata.ImageIdentifier);
+                galleryImages.Add(imageObject);
+            }
 
-        //    var name = gallery.GalleryName;
-        //    List<string> imageIds = gallery.ImageIds;
-
-        //    return View("Gallery", imageIds);
-        //}
+            return View("GalleryEmbedTest", galleryImages);
+        }
 
         [HttpGet]
         [Route("[controller]/Gallery/")]
@@ -68,8 +72,7 @@ namespace WebApp.Controllers
             {
                 imageObjects.Add(Converters.ConvertBytesToImage(image.Image, image.Title, image.Description, image.ImageIdentifier));
             }
-             //todo returner korrekt view
-            //return null;
+
             return View(imageObjects);
         }
 

@@ -1,0 +1,34 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<h2>Image Search</h2>
+
+<form asp-controller="Images" asp-action="Images" method="get">
+    <div>
+        <label for="title">Title:</label>
+        <input type="text" name="title" id="title" value="@ViewData["title"]" />
+    </div>
+    <div>
+        <label for="description">Description:</label>
+        <input type="text" name="description" id="description" value="@ViewData["description"]" />
+    </div>
+    <div>
+        <label for="dateTime">Date and Time:</label>
+        <input type="text" name="dateTime" id="dateTime" value="@ViewData["dateTime"]" />
+    </div>
+    <div>
+        <label for="location">Location:</label>
+        <input type="text" name="location" id="location" value="@ViewData["location"]" />
+    </div>
+    <div>
+        <label for="copyrightInformation">Copyright Information:</label>
+        <input type="text" name="copyrightInformation" id="copyrightInformation" value="@ViewData["copyrightInformation"]" />
+    </div>
+    <div>
+        <label for="keywords">Keywords:</label>
+        <input type="text" name="keywords" id="keywords" value="@ViewData["keywords"]" />
+    </div>
+    <button type="submit">Search</button>
+</form>
