@@ -1,17 +1,11 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Models
+@model List<ImageObject>
 @{
+    List<string> imageIds = Model.Select(x => x.Id).ToList();
 }
 
-@model List<ImageObject>
-@using Models
-
-<h1> Gallery</h1>
-
-<div class="row row-cols-1 row-cols-md-2 g-4">
-    @if (Model != null)
-    {
+<div class="gallery-embed">
+    <div class="row row-cols-1 row-cols-md-2 g-4">
         @foreach (var image in Model)
         {
             <div class="col">
@@ -24,5 +18,11 @@
                 </div>
             </div>
         }
-    }
+    </div>
+
+    <form asp-controller="Gallery" asp-action="CreateGallery" method="post">
+        <input type="text" name="galleryName" placeholder="Enter gallery name">
+        <input type="hidden" name="imageIdsSingleString" value="@string.Join(",", imageIds)">
+        <button type="submit">Create Gallery</button>
+    </form>
 </div>

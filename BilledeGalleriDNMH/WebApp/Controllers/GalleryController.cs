@@ -57,7 +57,7 @@ namespace WebApp.Controllers
                 galleryImages.Add(imageObject);
             }
 
-            return View("GalleryEmbedTest", galleryImages);
+            return View("CreateGallery", galleryImages);
         }
 
         [HttpGet]
@@ -75,6 +75,8 @@ namespace WebApp.Controllers
 
             return View(imageObjects);
         }
+
+
 
         [HttpGet]
         public async Task<IActionResult> Galleries()

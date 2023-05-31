@@ -1,6 +1,11 @@
 ﻿@model List<ImageObject>
 @using Models
 
+@*<div class="embed">
+    @await Html.PartialAsync("~/Views/Partial/GalleryEmbed.cshtml")
+</div>
+*@
+
 <h1> Gallery</h1>
 
 <div class="row row-cols-1 row-cols-md-2 g-4">
@@ -20,3 +25,24 @@
         }        
     }
 </div>
+
+<button id="copyButton" type="button" onclick="copyGallery()" class="btn btn-primary">Copy Gallery</button>
+
+<script>
+    function copyGallery() {
+        // Select the gallery container
+        const galleryContainer = document.querySelector('.row');
+        // Create a temporary textarea element
+        const textarea = document.createElement('textarea');
+        textarea.value = galleryContainer.outerHTML;
+        // Append the textarea to the document
+        document.body.appendChild(textarea);
+        // Copy the gallery HTML to the clipboard
+        textarea.select();
+        document.execCommand('copy');
+        // Remove the temporary textarea
+        document.body.removeChild(textarea);
+        // Display a success message or perform other actions
+        alert('Gallery copied to clipboard!');
+    }
+</script>
