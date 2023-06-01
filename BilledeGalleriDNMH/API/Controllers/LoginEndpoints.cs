@@ -1,4 +1,5 @@
 ﻿using BLL;
+using Models;
 
 namespace API.Controllers
 {
@@ -9,13 +10,13 @@ namespace API.Controllers
             application.MapPost("/login", Login);
         }
 
-        static async Task<string> Login(string email, string password)
+        static async Task<string> Login(User user)
         {
             JWTLogic jWTLogic = new();
 
             try
             {
-                var tokenString = await jWTLogic.GenerateJwt(email, password);
+                var tokenString = await jWTLogic.GenerateJwt(user.Email, user.Password);
                 return tokenString;
             }
             catch (Exception ex)

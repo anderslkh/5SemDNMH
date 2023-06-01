@@ -1,0 +1,25 @@
+﻿@page
+
+@{
+    Layout = null;
+}
+
+<h1>Login</h1>
+
+<form method="post">
+    <div>
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" required>
+    </div>
+
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+
+    <button type="submit">Login</button>
+</form>
+
+<div>
+    <a asp-controller="Login" asp-action="SignUp">Sign Up</a>
+</div>

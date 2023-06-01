@@ -13,15 +13,9 @@ namespace WebApp.Service
             _httpClient = new HttpClient();
         }
 
-        public async Task<string> CreateUser(string email, string password)
+        public async Task<string> CreateUser(User user)
         {
             _httpClient.BaseAddress = new Uri(restUrl);
-
-            User user = new User
-            {
-                Email = email,
-                Password = password
-            };
 
             var response = await _httpClient.PostAsJsonAsync(restUrl, user);
 
