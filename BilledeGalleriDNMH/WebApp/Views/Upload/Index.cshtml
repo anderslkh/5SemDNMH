@@ -10,6 +10,9 @@
         <input type="file" name="File" id="File" />
     </div>
     <div>
+        <button type="button" onclick="getExifData()">Get Data</button>
+    </div>
+    <div>
         <label for="Title">Title:</label>
         <input type="text" name="Title" id="Title" />
     </div>
@@ -18,7 +21,7 @@
         <input type="text" name="Description" id="Description" />
     </div>
     <div>
-        <label for="Lcoation">Location:</label>
+        <label for="Location">Location:</label>
         <input type="text" name="Location" id="Location" />
     </div>
     <div>
@@ -33,3 +36,23 @@
         <button type="submit">Upload</button>
     </div>
 </form>
+
+<script src="https://cdn.jsdelivr.net/npm/exifr/dist/exifr.min.js"></script>
+<script>
+    function getExifData() {
+        const fileInput = document.getElementById('File');
+        const file = fileInput.files[0];
+
+        EXIFR.getData(file)
+            .then(metadata => {
+                document.getElementById('Title').value = metadata.ImageDescription || '';
+                document.getElementById('Description').value = metadata.ImageDescription || '';
+                document.getElementById('Location').value = metadata.latitude && metadata.longitude ? `Latitude: ${metadata.latitude}, Longitude: ${metadata.longitude}` : '';
+                document.getElementById('CopyrightInformation').value = metadata.Copyright || '';
+                document.getElementById('Keywords').value = metadata.Keywords ? metadata.Keywords.join(', ') : '';
+            })
+            .catch(error => {
+                console.error('Error extracting EXIF metadata:', error);
+            });
+    }
+</script>
