@@ -1,6 +1,7 @@
 ﻿using Models;
 using MongoDB.Driver;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 
 namespace WebApp.Service
 {
@@ -8,10 +9,16 @@ namespace WebApp.Service
     {
         private readonly HttpClient _httpClient;
         private static readonly string restUrl = "https://localhost:7107/imageMetadatas/";
+        private readonly IHttpContextAccessor _contextAccessor;
 
-        public ImageMetadataService()
+        public ImageMetadataService(IHttpContextAccessor httpContextAccessor)
         {
             _httpClient = new HttpClient();
+            _contextAccessor = httpContextAccessor;
+
+            var token = _contextAccessor.HttpContext.Request.Cookies["X-Access-Token"];
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
         public async Task<string> UploadImage(ImageMetadata imageMetadata)
@@ -33,6 +40,9 @@ namespace WebApp.Service
 
         public async Task<List<ImageMetadata>> GetImagesFromIds(string imageIds)
         {
+            var token = _contextAccessor.HttpContext.Request.Cookies["X-Access-Token"];
+
+
             var url = $"https://localhost:7107/imageMetadatasFromId?imageIds={imageIds}";
             List<ImageMetadata> result = null;
             try
@@ -71,6 +81,8 @@ namespace WebApp.Service
                 copyrightInformation,
                 keywords,
                 imageIdentifier);
+
+            
 
             var uri = new Uri(useUrl);
             try

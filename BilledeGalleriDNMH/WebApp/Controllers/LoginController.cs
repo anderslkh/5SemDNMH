@@ -36,7 +36,7 @@ namespace WebApp.Controllers
                 };
 
                 // Set the JWT token in the cookie
-                Response.Cookies.Append("jwtToken", token, cookieOptions);
+                Response.Cookies.Append("X-Access-Token", token, cookieOptions);
 
                 return LocalRedirect("~/Home/Index");
             }

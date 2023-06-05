@@ -1,5 +1,8 @@
-﻿using Models;
+﻿using Amazon.Runtime.Internal;
+using Microsoft.AspNetCore.Http;
+using Models;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 
 namespace WebApp.Service
 {
@@ -7,10 +10,16 @@ namespace WebApp.Service
     {
         private readonly HttpClient _httpClient;
         private static readonly string restUrl = "https://localhost:7107/Gallery/";
+        private readonly IHttpContextAccessor _contextAccessor;
 
-        public GalleryService() 
+        public GalleryService(IHttpContextAccessor httpContextAccessor) 
         {
             _httpClient = new HttpClient();
+            _contextAccessor = httpContextAccessor;
+
+            var token = _contextAccessor.HttpContext.Request.Cookies["X-Access-Token"];
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
         public async Task<string> CreateGallery(string galleryName, List<string> imageIds)

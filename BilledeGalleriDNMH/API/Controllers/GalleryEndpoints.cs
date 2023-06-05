@@ -1,4 +1,5 @@
 ﻿using BLL;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using MongoDBRepository.Repositories;
@@ -15,6 +16,7 @@ namespace API.Controllers
             application.MapGet("/Galleries", ReadMany);
         }
 
+        [Authorize]
         static async Task<IResult> Create([FromBody] Gallery gallery)
         {
             GalleryRepository galleryRepository = new GalleryRepository();
@@ -31,6 +33,7 @@ namespace API.Controllers
             }
         }
 
+        [Authorize]
         static async Task<Gallery> ReadOne(string name)
         {
             GalleryRepository galleryRepository = new GalleryRepository();
@@ -40,6 +43,7 @@ namespace API.Controllers
             return gallery;
         }
 
+        [Authorize]
         static async Task<List<Gallery>> ReadMany()
         {
             GalleryRepository galleryRepository = new GalleryRepository();
