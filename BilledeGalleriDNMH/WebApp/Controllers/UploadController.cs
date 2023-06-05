@@ -17,8 +17,6 @@ namespace WebApp.Controllers
             _imageMetadataService = imageMetadataService;
         }
 
-
-
         public IActionResult Index()
         {
             return View();

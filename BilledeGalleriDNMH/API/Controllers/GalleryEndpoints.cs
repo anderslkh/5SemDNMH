@@ -1,9 +1,7 @@
-﻿using BLL;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using MongoDBRepository.Repositories;
-using System.Xml.Linq;
 
 namespace API.Controllers
 {

@@ -33,10 +33,8 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-
                 throw;
             }
-
         }
 
         [Authorize]
@@ -52,7 +50,6 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-
                 throw;
             }
 
@@ -70,7 +67,6 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-
                 throw;
             }
         }

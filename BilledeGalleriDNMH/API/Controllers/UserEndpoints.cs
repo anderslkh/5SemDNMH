@@ -1,5 +1,4 @@
 ﻿using BLL;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using MongoDBRepository.Repositories;
@@ -18,7 +17,7 @@ namespace API.Controllers
         {
             PasswordLogic passwordLogic = new PasswordLogic();
             UserRepository userRepository = new();
-    
+
             User hashedUser = passwordLogic.HashPassword(receivedUser);
 
             await userRepository.Create(hashedUser);

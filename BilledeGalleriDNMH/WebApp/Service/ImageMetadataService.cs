@@ -57,7 +57,6 @@ namespace WebApp.Service
             }
             catch (Exception)
             {
-
                 throw;
             }
             return result;
@@ -81,8 +80,6 @@ namespace WebApp.Service
                 copyrightInformation,
                 keywords,
                 imageIdentifier);
-
-            
 
             var uri = new Uri(useUrl);
             try

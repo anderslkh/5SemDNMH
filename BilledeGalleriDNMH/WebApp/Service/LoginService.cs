@@ -26,8 +26,6 @@ namespace WebApp.Service
             {
                 throw ex;
             }
-
         }
-
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Models;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using System.Xml.Linq;
 
 namespace MongoDBRepository.Repositories
 {

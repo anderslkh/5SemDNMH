@@ -51,7 +51,6 @@ namespace WebApp.Service
             }
 
             return user;
-
         }
     }
 }

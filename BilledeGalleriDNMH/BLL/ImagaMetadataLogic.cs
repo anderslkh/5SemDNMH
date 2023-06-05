@@ -39,7 +39,6 @@ namespace BLL
             }
             catch
             {
-
                 return null;
             }
         }
@@ -112,7 +111,6 @@ namespace BLL
             }
             catch
             {
-
                 return null;
             }
         }

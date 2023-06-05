@@ -32,7 +32,7 @@ namespace WebApp.Controllers
         {
             List<string> imageIds = imageIdsSingleString.Split(',').ToList();
 
-            if (galleryName != null && imageIdsSingleString != null) 
+            if (galleryName != null && imageIdsSingleString != null)
             {
                 await _galleryService.CreateGallery(galleryName, imageIds);
             }
@@ -75,8 +75,6 @@ namespace WebApp.Controllers
             return View(imageObjects);
         }
 
-
-
         [HttpGet]
         public async Task<IActionResult> Galleries()
         {
@@ -84,6 +82,5 @@ namespace WebApp.Controllers
 
             return View(galleries);
         }
-
     }
 }

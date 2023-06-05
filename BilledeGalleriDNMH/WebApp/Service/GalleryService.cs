@@ -1,6 +1,4 @@
-﻿using Amazon.Runtime.Internal;
-using Microsoft.AspNetCore.Http;
-using Models;
+﻿using Models;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 
@@ -12,7 +10,7 @@ namespace WebApp.Service
         private static readonly string restUrl = "https://localhost:7107/Gallery/";
         private readonly IHttpContextAccessor _contextAccessor;
 
-        public GalleryService(IHttpContextAccessor httpContextAccessor) 
+        public GalleryService(IHttpContextAccessor httpContextAccessor)
         {
             _httpClient = new HttpClient();
             _contextAccessor = httpContextAccessor;
@@ -53,7 +51,7 @@ namespace WebApp.Service
             try
             {
                 var response = await _httpClient.GetAsync(url);
-                if (response.IsSuccessStatusCode) 
+                if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
                     var documents = JsonConvert.DeserializeObject<Gallery>(content);

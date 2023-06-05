@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Models;
 using System.Diagnostics;
-using System.Drawing;
 using WebApp.Helpers;
 using WebApp.Models;
 using WebApp.Service;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace WebApp.Controllers
 {
@@ -15,7 +13,7 @@ namespace WebApp.Controllers
         private readonly ImageMetadataService _imageMetadataService;
 
         public HomeController(
-            ILogger<HomeController> logger, 
+            ILogger<HomeController> logger,
             ImageMetadataService imageMetadataService)
         {
             _logger = logger;
@@ -56,12 +54,10 @@ namespace WebApp.Controllers
             return View("GalleryEmbedTest", galleryImages);
         }
 
-
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-   }
+    }
 }
