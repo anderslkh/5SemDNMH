@@ -21,9 +21,15 @@ namespace WebApp.Controllers
         {
             LoginService loginService = new LoginService();
 
+
             try
             {
                 var token = await loginService.Login(user);
+
+                if (token == "Invalid credentials.")
+                {
+                    return View("Login");
+                }
 
                 var cookieOptions = new CookieOptions
                 {
@@ -37,7 +43,7 @@ namespace WebApp.Controllers
 
                 // Set the JWT token in the cookie
                 Response.Cookies.Append("X-Access-Token", token, cookieOptions);
-
+                
                 return LocalRedirect("~/Home/Index");
             }
             catch (Exception)
