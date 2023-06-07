@@ -6,14 +6,10 @@ namespace WebApp.Controllers
 {
     public class UploadController : Controller
     {
-        private readonly ILogger<UploadController> _logger;
         private readonly ImageMetadataService _imageMetadataService;
 
-        public UploadController(
-            ILogger<UploadController> logger,
-            ImageMetadataService imageMetadataService)
+        public UploadController(ImageMetadataService imageMetadataService)
         {
-            _logger = logger;
             _imageMetadataService = imageMetadataService;
         }
 

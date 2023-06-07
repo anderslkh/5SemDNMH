@@ -9,14 +9,10 @@ namespace WebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly ImageMetadataService _imageMetadataService;
 
-        public HomeController(
-            ILogger<HomeController> logger,
-            ImageMetadataService imageMetadataService)
+        public HomeController(ImageMetadataService imageMetadataService)
         {
-            _logger = logger;
             _imageMetadataService = imageMetadataService;
         }
 

@@ -7,16 +7,13 @@ namespace WebApp.Controllers
 {
     public class GalleryController : Controller
     {
-        private readonly ILogger<GalleryController> _logger;
         private readonly GalleryService _galleryService;
         private readonly ImageMetadataService _imageMetadataService;
 
         public GalleryController(
-            ILogger<GalleryController> logger,
             GalleryService galleryService,
             ImageMetadataService imageMetadataService)
         {
-            _logger = logger;
             _galleryService = galleryService;
             _imageMetadataService = imageMetadataService;
         }

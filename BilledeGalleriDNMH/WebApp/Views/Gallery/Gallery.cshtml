@@ -1,7 +1,7 @@
 ﻿@model List<ImageObject>
 @using Models
 
-<h1> Gallery</h1>
+<h1>Gallery</h1>
 
 <div class="row row-cols-1 row-cols-md-2 g-4">
     @if (Model != null)
@@ -10,14 +10,16 @@
         {
             <div class="col">
                 <div class="card">
-                    <img src="@($"data:image/jpeg;base64,{Convert.ToBase64String(image.Data)}")" class="card-img-top" alt="@image.ImageTitle" >
+                    <a href="@($"data:image/jpeg;base64,{Convert.ToBase64String(image.Data)}")" target="_blank">
+                        <img src="@($"data:image/jpeg;base64,{Convert.ToBase64String(image.Data)}")" class="card-img-top" alt="@image.ImageTitle">
+                    </a>
                     <div class="card-body">
                         <h5 class="card-title">@image.ImageTitle</h5>
                         <p class="card-text">@image.ImageDescription</p>
                     </div>
                 </div>
             </div>
-        }        
+        }
     }
 </div>
 

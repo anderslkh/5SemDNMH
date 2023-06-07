@@ -42,7 +42,8 @@
         reader.onload = function (event) {
             var exifData = EXIF.readFromBinaryFile(event.target.result);
 
-            //der hentes kun description og copyright information da dette library ikke understøtter til at hente billedets title, keywords eller location
+            //der hentes kun description og copyright information da dette
+            //library ikke understøtter til at hente billedets title, keywords eller location
             document.getElementById('Description').value = exifData.ImageDescription || '';
             document.getElementById('CopyrightInformation').value = exifData.Copyright || '';
         };

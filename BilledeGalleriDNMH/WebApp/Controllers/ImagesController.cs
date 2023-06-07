@@ -7,14 +7,10 @@ namespace WebApp.Controllers
 {
     public class ImagesController : Controller
     {
-        private readonly ILogger<ImagesController> _logger;
         private readonly ImageMetadataService _imageMetadataService;
 
-        public ImagesController(
-            ILogger<ImagesController> logger,
-            ImageMetadataService imageMetadataService)
+        public ImagesController(ImageMetadataService imageMetadataService)
         {
-            _logger = logger;
             _imageMetadataService = imageMetadataService;
         }
 
@@ -23,7 +19,6 @@ namespace WebApp.Controllers
         {
             return View();
         }
-
 
         /// <summary>
         /// Gets ImageMetadata based on search parameters, 
@@ -53,7 +48,5 @@ namespace WebApp.Controllers
 
             return View(imageObjects);
         }
-
-
     }
 }
