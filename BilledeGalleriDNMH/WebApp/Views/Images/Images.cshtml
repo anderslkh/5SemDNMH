@@ -14,16 +14,16 @@
     <div class="image-gallery">
         @if (Model != null)
         {
-            @foreach (var image in Model)
+            @foreach (var imageObject in Model)
             {
-                if (image != null)
+                if (imageObject != null)
                 {
                     <div>
-                        <h3>@image.ImageTitle</h3>
-                        <h3>@image.Id</h3>
-                        <img src="data:image/jpeg;base64, @image.Base64" class="image"/>
-                        <p>@image.ImageDescription</p>
-                        <input type="checkbox" name="selectedImages" value="@image.Id" />
+                        <h3>@imageObject.ImageTitle</h3>
+                        <h3>@imageObject.Id</h3>
+                        <img src="data:image/jpeg;base64, @imageObject.Base64" class="image"/>
+                        <p>@imageObject.ImageDescription</p>
+                        <input type="checkbox" name="selectedImages" value="@imageObject.Id" />
                     </div>
                     <br />
                     <br />
