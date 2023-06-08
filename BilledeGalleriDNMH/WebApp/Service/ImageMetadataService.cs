@@ -1,65 +1,74 @@
 ﻿using Models;
 using MongoDB.Driver;
 using Newtonsoft.Json;
+using NuGet.Common;
+using System.Net.Http;
 using System.Net.Http.Headers;
 
 namespace WebApp.Service
 {
     public class ImageMetadataService
     {
-        private readonly HttpClient _httpClient;
         private static readonly string restUrl = "https://localhost:7107/imageMetadatas/";
         private readonly IHttpContextAccessor _contextAccessor;
 
         public ImageMetadataService(IHttpContextAccessor httpContextAccessor)
         {
-            _httpClient = new HttpClient();
             _contextAccessor = httpContextAccessor;
-
-            var token = _contextAccessor.HttpContext.Request.Cookies["X-Access-Token"];
-
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
         public async Task<string> UploadImage(ImageMetadata imageMetadata)
         {
-            _httpClient.BaseAddress = new Uri(restUrl);
-
-            HttpResponseMessage response = await _httpClient.PostAsJsonAsync(restUrl, imageMetadata);
-
-            if (response.IsSuccessStatusCode)
+            using (HttpClient httpClient = new HttpClient())
             {
-                string result = await response.Content.ReadAsStringAsync();
-                return result;
+                var token = _contextAccessor.HttpContext.Request.Cookies["X-Access-Token"];
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                httpClient.BaseAddress = new Uri(restUrl);
+
+                try
+                {
+                    HttpResponseMessage response = await httpClient.PostAsJsonAsync(restUrl, imageMetadata);
+
+                    string result = await response.Content.ReadAsStringAsync();
+
+                    return result;
+
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
             }
-            else
-            {
-                throw new Exception($"API call failed with status code {response.StatusCode}");
-            };
         }
 
         public async Task<List<ImageMetadata>> GetImagesFromIds(string imageIds)
         {
-            var token = _contextAccessor.HttpContext.Request.Cookies["X-Access-Token"];
-
-
             var url = $"https://localhost:7107/imageMetadatasFromId?imageIds={imageIds}";
-            List<ImageMetadata> result = null;
-            try
+
+            using (HttpClient httpClient = new HttpClient()) 
             {
-                var response = await _httpClient.GetAsync(url);
-                if (response.IsSuccessStatusCode)
+                var token = _contextAccessor.HttpContext.Request.Cookies["X-Access-Token"];
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                httpClient.BaseAddress = new Uri(restUrl);
+
+                try
                 {
+                    var response = await httpClient.GetAsync(url);
+                    
                     var content = await response.Content.ReadAsStringAsync();
+
                     var documents = JsonConvert.DeserializeObject<List<ImageMetadata>>(content);
-                    result = documents;
+
+                    return documents;
+                    
+                }
+                catch (Exception)
+                {
+                    throw;
                 }
             }
-            catch (Exception)
-            {
-                throw;
-            }
-            return result;
         }
 
         public async Task<List<ImageMetadata>> GetImageMetadata(
@@ -81,22 +90,29 @@ namespace WebApp.Service
                 keywords,
                 imageIdentifier);
 
-            var uri = new Uri(useUrl);
-            try
+
+            using (HttpClient httpClient = new HttpClient()) 
             {
-                var response = await _httpClient.GetAsync(uri);
-                if (response.IsSuccessStatusCode)
+                var token = _contextAccessor.HttpContext.Request.Cookies["X-Access-Token"];
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                var uri = new Uri(useUrl);
+                try
                 {
-                    var content = await response.Content.ReadAsStringAsync();
-                    var documents = JsonConvert.DeserializeObject<List<ImageMetadata>>(content);
-                    foundImageMetadata = documents.ToList();
+                    var response = await httpClient.GetAsync(uri);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+                        var documents = JsonConvert.DeserializeObject<List<ImageMetadata>>(content);
+                        foundImageMetadata = documents.ToList();
+                    }
                 }
-            }
-            catch (BadHttpRequestException ex)
-            {
-                throw ex;
-            }
-            return foundImageMetadata;
+                catch (BadHttpRequestException ex)
+                {
+                    throw ex;
+                }
+                return foundImageMetadata;
+            } 
         }
 
         public string GetCustomUrl(
