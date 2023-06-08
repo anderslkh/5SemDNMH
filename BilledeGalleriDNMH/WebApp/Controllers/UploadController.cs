@@ -22,31 +22,40 @@ namespace WebApp.Controllers
         [Route("[controller]/UploadAsync")]
         public async Task<ActionResult> UploadAsync(ImageFormFile imageFile)
         {
-            // Save imageBytes to database
-            if (imageFile.File != null)
+            try
             {
-                var filePath = Path.GetTempFileName();
-                using (var stream = System.IO.File.Create(filePath))
+                // Save imageBytes to database
+                if (imageFile.File != null)
                 {
-                    await imageFile.File.CopyToAsync(stream);
+                    var filePath = Path.GetTempFileName();
+                    using (var stream = System.IO.File.Create(filePath))
+                    {
+                        await imageFile.File.CopyToAsync(stream);
+                    }
+                    var imageBytes = System.IO.File.ReadAllBytes(filePath);
+
+                    ImageMetadata imageMetadata = new ImageMetadata
+                    {
+                        Image = imageBytes,
+                        Title = imageFile.Title,
+                        Description = imageFile.Description,
+                        DateTime = DateTime.Now,
+                        Location = imageFile.Location,
+                        CopyrightInformation = imageFile.CopyrightInformation,
+                        Keywords = imageFile.Keywords.Split(",").Select(x => x.Trim()).ToArray()
+                    };
+
+                    await _imageMetadataService.UploadImage(imageMetadata);
                 }
-                var imageBytes = System.IO.File.ReadAllBytes(filePath);
 
-                ImageMetadata imageMetadata = new ImageMetadata
-                {
-                    Image = imageBytes,
-                    Title = imageFile.Title,
-                    Description = imageFile.Description,
-                    DateTime = DateTime.Now,
-                    Location = imageFile.Location,
-                    CopyrightInformation = imageFile.CopyrightInformation,
-                    Keywords = imageFile.Keywords.Split(",").Select(x => x.Trim()).ToArray()
-                };
-
-                await _imageMetadataService.UploadImage(imageMetadata);
+                return View("index");
             }
+            catch (Exception)
+            {
 
-            return View("index");
+                throw;
+            }
+           
         }
     }
 }

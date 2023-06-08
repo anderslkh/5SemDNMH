@@ -36,17 +36,27 @@ namespace WebApp.Controllers
         {
             string[] keywordArray = Converters.ConvertKeywordsToArray(keywords);
             DateTime? dateTimeValue = Converters.ConvertStringToDateTime(dateTime);
-
-            List<ImageMetadata> images = await _imageMetadataService.GetImageMetadata(title, description, dateTimeValue, location, copyrightInformation, keywordArray);
-
-            List<ImageObject> imageObjects = new List<ImageObject>();
-
-            foreach (var image in images)
+            try
             {
-                imageObjects.Add(Converters.ConvertBytesToImage(image.Image, image.Title, image.Description, image.ImageIdentifier));
-            }
+                List<ImageMetadata> images = await _imageMetadataService.GetImageMetadata(title, description, dateTimeValue, location, copyrightInformation, keywordArray);
 
-            return View(imageObjects);
+                List<ImageObject> imageObjects = new List<ImageObject>();
+
+                if (images != null)
+                {
+                    foreach (var image in images)
+                    {
+                        imageObjects.Add(Converters.ConvertBytesToImage(image.Image, image.Title, image.Description, image.ImageIdentifier));
+                    }
+                }
+               
+                return View(imageObjects);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }  
         }
     }
 }
