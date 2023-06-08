@@ -3,7 +3,7 @@ using Models;
 
 namespace Tests
 {
-    public class UnitTest1
+    public class ImageMetadataEditorTests
     {
         [Fact]
         public void UpdateExifDataExpectSuccess()
