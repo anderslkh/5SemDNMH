@@ -3,7 +3,7 @@ using Models;
 
 namespace Tests
 {
-    public class UnitTest1
+    public class ImageMetadataEditorTests
     {
         [Fact]
         public void UpdateExifDataExpectSuccess()
@@ -17,7 +17,7 @@ namespace Tests
 
             //Act
             byte[] imageUpdated = ImageMetadataEditor.UpdateExifMetadata(imageBytes, "burgerwithcheese",
-                "here is a burger with cheese seen", "copyright info for image of burger with cheese", new string[] {"burger", "cheese", "cheeseburger"});
+                "exampleDescription", "exampleCopyrightInformation", new string[] {"burger", "cheese", "cheeseburger"});
 
             //Assert
             Assert.NotEqual(imageBytes, imageUpdated);
@@ -30,7 +30,7 @@ namespace Tests
 
             //Act
             void act() => ImageMetadataEditor.UpdateExifMetadata(null, "burgerwithcheese",
-                "here is a burger with cheese seen", "copyright info for image of burger with cheese", new string[] { "burger", "cheese", "cheeseburger" });
+                "exampleDescription", "exampleCopyrightInformation", new string[] { "burger", "cheese", "cheeseburger" });
 
             //Assert
             Assert.Throws<ArgumentNullException>(act);
@@ -43,7 +43,7 @@ namespace Tests
 
             //Act
             void act() => ImageMetadataEditor.UpdateExifMetadata(new byte[] {}, "burgerwithcheese",
-                "here is a burger with cheese seen", "copyright info for image of burger with cheese", new string[] { "burger", "cheese", "cheeseburger" });
+                "exampleDescription", "exampleCopyrightInformation", new string[] { "burger", "cheese", "cheeseburger" });
 
             //Assert
             Assert.Throws<ArgumentException>(act);
@@ -61,7 +61,7 @@ namespace Tests
 
             //Act
             void act() => ImageMetadataEditor.UpdateExifMetadata(textBytes, "burgerwithcheese",
-                "here is a burger with cheese seen", "copyright info for image of burger with cheese", new string[] { "burger", "cheese", "cheeseburger" });
+                "exampleDescription", "exampleCopyrightInformation", new string[] { "burger", "cheese", "cheeseburger" });
 
             //Assert
             Assert.Throws<ArgumentException>(act);
