@@ -34,6 +34,14 @@ namespace WebApp.Controllers
                     }
                     var imageBytes = System.IO.File.ReadAllBytes(filePath);
 
+                    if (imageFile.Title == null || imageFile.Description == null || 
+                        imageFile.Location == null || imageFile.CopyrightInformation == null 
+                        || imageFile.Keywords == null)
+                    {
+                        TempData["ErrorMessage"] = "Invalid image file data. Please ensure all required fields are provided.";
+                        return RedirectToAction("Error", "Home", new { errorMessage = TempData["ErrorMessage"] });
+                    }
+
                     ImageMetadata imageMetadata = new ImageMetadata
                     {
                         Image = imageBytes,
@@ -46,16 +54,22 @@ namespace WebApp.Controllers
                     };
 
                     await _imageMetadataService.UploadImage(imageMetadata);
+                } else 
+                {
+                    TempData["ErrorMessage"] = "Pls choose an image to upload";
+                    // Redirect to the Error action of the Home controller
+                    return RedirectToAction("Error", "Home", new { errorMessage = TempData["ErrorMessage"] });
                 }
 
                 return View("index");
             }
             catch (Exception)
             {
-
-                throw;
+                TempData["ErrorMessage"] = "An error occurred while uploading the image.";
+                // Redirect to the Error action of the Home controller
+                return RedirectToAction("Error", "Home", new { errorMessage = TempData["ErrorMessage"] });
             }
-           
+
         }
     }
 }

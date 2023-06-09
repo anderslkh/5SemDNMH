@@ -50,10 +50,22 @@ namespace WebApp.Controllers
             return View("GalleryEmbedTest", galleryImages);
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public class CustomErrorViewModel
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            public string RequestId { get; set; }
+            public string ErrorMessage { get; set; } // Add ErrorMessage property
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error(string errorMessage = null)
+        {
+            var errorViewModel = new CustomErrorViewModel
+            {
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
+                ErrorMessage = errorMessage // Pass the error message to the view
+            };
+
+            return View(errorViewModel);
         }
     }
 }
