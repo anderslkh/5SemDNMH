@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    internal class CustomErrorViewModel
+    public class CustomErrorViewModel
     {
+        public string RequestId { get; set; }
+        public string ErrorMessage { get; set; } // Add ErrorMessage property
     }
 }
