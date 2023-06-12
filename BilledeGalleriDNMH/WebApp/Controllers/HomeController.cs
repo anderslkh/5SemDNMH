@@ -50,12 +50,6 @@ namespace WebApp.Controllers
             return View("GalleryEmbedTest", galleryImages);
         }
 
-        public class CustomErrorViewModel
-        {
-            public string RequestId { get; set; }
-            public string ErrorMessage { get; set; } // Add ErrorMessage property
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error(string errorMessage = null)
         {

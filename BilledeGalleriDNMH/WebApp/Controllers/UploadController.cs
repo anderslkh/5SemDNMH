@@ -63,9 +63,9 @@ namespace WebApp.Controllers
 
                 return View("index");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "An error occurred while uploading the image.";
+                TempData["ErrorMessage"] = $"{ex.Message}";
                 // Redirect to the Error action of the Home controller
                 return RedirectToAction("Error", "Home", new { errorMessage = TempData["ErrorMessage"] });
             }
