@@ -34,9 +34,7 @@ namespace MongoDBRepository.Repositories
         {
             FilterDefinition<ImageMetadata> filter = CreateFilterDefinition(filterObject);
 
-            SortDefinition<ImageMetadata> sort = CreateSortDefinition(filterObject);
-
-            List<ImageMetadata> list = await collection.Find(filter).Sort(sort).ToListAsync();
+            List<ImageMetadata> list = await collection.Find(filter).ToListAsync();
 
             return list;
         }
@@ -108,15 +106,6 @@ namespace MongoDBRepository.Repositories
             }
 
             return filter;
-        }
-
-        protected virtual SortDefinition<ImageMetadata> CreateSortDefinition(BaseQueryParameters? sortObject)
-        {
-            SortDefinitionBuilder<ImageMetadata> builder = Builders<ImageMetadata>.Sort;
-
-            var sort = builder.Ascending(imageMetadata => imageMetadata.Id);
-
-            return sort;
         }
     }
 }
