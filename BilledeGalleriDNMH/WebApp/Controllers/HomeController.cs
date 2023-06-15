@@ -1,16 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Models;
 using System.Diagnostics;
+using WebApp.Helpers;
 using WebApp.Models;
+using WebApp.Service;
 
 namespace WebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ImageMetadataService _imageMetadataService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ImageMetadataService imageMetadataService)
         {
-            _logger = logger;
+            _imageMetadataService = imageMetadataService;
         }
 
         public IActionResult Index()
@@ -23,10 +26,40 @@ namespace WebApp.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Gallery()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View();
+        }
+
+        public async Task<IActionResult> MoveToGallery(string[] selectedImages, string title, string description, string dateTime, string location, string copyrightInformation, string keywords)
+        {
+            string[] keywordArray = Converters.ConvertKeywordsToArray(keywords);
+            DateTime? dateTimeValue = Converters.ConvertStringToDateTime(dateTime);
+
+            List<ImageObject> galleryImages = new List<ImageObject>();
+
+            foreach (string imageId in selectedImages)
+            {
+                var imageMetadatas = await _imageMetadataService.GetImageMetadata(title, description, dateTimeValue, location, copyrightInformation, keywordArray, imageId);
+                var imageMetadata = imageMetadatas.First();
+
+                ImageObject imageObject = Converters.ConvertBytesToImage(imageMetadata.Image, imageMetadata.Title, imageMetadata.Description, imageMetadata.ImageIdentifier);
+                galleryImages.Add(imageObject);
+            }
+
+            return View("GalleryEmbedTest", galleryImages);
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error(string errorMessage = null)
+        {
+            var errorViewModel = new CustomErrorViewModel
+            {
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
+                ErrorMessage = errorMessage // Pass the error message to the view
+            };
+
+            return View(errorViewModel);
         }
     }
 }

@@ -1,9 +1,4 @@
 ﻿using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Models
 {
@@ -27,6 +22,20 @@ namespace Models
         public static string GetDatabaseName()
         {
             return _configuration.GetConnectionString("DatabaseName");
+        }
+        public static string GetSecretKey()
+        {
+            return _configuration.GetSection("JwtConfig")["SecretKey"];
+        }
+
+        public static string GetIssuer()
+        {
+            return _configuration.GetSection("JwtConfig")["Issuer"];
+        }
+
+        public static string GetAudience()
+        {
+            return _configuration.GetSection("JwtConfig")["Audience"];
         }
     }
 }

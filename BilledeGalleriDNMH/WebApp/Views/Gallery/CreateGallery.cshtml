@@ -1,0 +1,28 @@
+﻿@using Models
+@model List<ImageObject>
+@{
+    List<string> imageIds = Model.Select(x => x.Id).ToList();
+}
+
+<div class="gallery-embed">
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        @foreach (var image in Model)
+        {
+            <div class="col">
+                <div class="card">
+                    <img src="@($"data:image/jpeg;base64,{Convert.ToBase64String(image.Data)}")" class="card-img-top" alt="@image.ImageTitle">
+                    <div class="card-body">
+                        <h5 class="card-title">@image.ImageTitle</h5>
+                        <p class="card-text">@image.ImageDescription</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <form asp-controller="Gallery" asp-action="CreateGallery" method="post">
+        <input type="text" name="galleryName" placeholder="Enter gallery name">
+        <input type="hidden" name="imageIdsSingleString" value="@string.Join(",", imageIds)">
+        <button type="submit">Create Gallery</button>
+    </form>
+</div>

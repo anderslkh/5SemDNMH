@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "Upload Images";
+}
+
+<form asp-action="UploadAsync" enctype="multipart/form-data">
+    <div>
+        <label for="File">File:</label>
+        <input type="file" name="File" id="File" />
+    </div>
+    <div>
+        <label for="Title">Title:</label>
+        <input type="text" name="Title" id="Title" />
+    </div>
+    <div>
+        <label for="Description">Description:</label>
+        <input type="text" name="Description" id="Description" />
+    </div>
+    <div>
+        <label for="Lcoation">Location:</label>
+        <input type="text" name="Location" id="Location" />
+    </div>
+    <div>
+        <label for="CopyrightInformation">Copyright Information:</label>
+        <input type="text" name="CopyrightInformation" id="CopyrightInformation" />
+    </div>
+    <div>
+        <label for="Keywords">Keywords (separate with comma):</label>
+        <input type="text" name="Keywords" id="Keywords" />
+    </div>
+    <div>
+        <button type="submit">Upload</button>
+    </div>
+</form>
+
+
+<script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
+<script>
+    document.getElementById('File').addEventListener('change', function (e) {
+        var file = e.target.files[0];
+        var reader = new FileReader();
+
+        reader.onload = function (event) {
+            var exifData = EXIF.readFromBinaryFile(event.target.result);
+
+            //der hentes kun description og copyright information da dette
+            //library ikke understøtter til at hente billedets title, keywords eller location
+            document.getElementById('Description').value = exifData.ImageDescription || '';
+            document.getElementById('CopyrightInformation').value = exifData.Copyright || '';
+        };
+
+        reader.readAsArrayBuffer(file);
+    });
+</script>

@@ -1,12 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.Extensions.Options;
-using Models;
+﻿using Models;
 using MongoDB.Driver;
-using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
-using static System.Net.Mime.MediaTypeNames;
-using System;
-using MongoDB.Bson;
 
 namespace MongoDBRepository.Repositories
 {
@@ -32,7 +25,7 @@ namespace MongoDBRepository.Repositories
 
         public async Task<bool> Delete(Guid id)
         {
-            FilterDefinition<ImageMetadata> filter = Builders<ImageMetadata>.Filter.Eq(T => T.Id, id);
+            FilterDefinition<ImageMetadata> filter = Builders<ImageMetadata>.Filter.Eq(imageMetadata => imageMetadata.Id, id);
             DeleteResult result = await collection.DeleteOneAsync(filter);
             return result.DeletedCount != 0;
         }
@@ -41,11 +34,19 @@ namespace MongoDBRepository.Repositories
         {
             FilterDefinition<ImageMetadata> filter = CreateFilterDefinition(filterObject);
 
-            SortDefinition<ImageMetadata> sort = CreateSortDefinition(filterObject);
-
-            List<ImageMetadata> list = await collection.Find(filter).Sort(sort).ToListAsync();
+            List<ImageMetadata> list = await collection.Find(filter).ToListAsync();
 
             return list;
+        }
+
+        public async Task<List<ImageMetadata>> ReadManyFromId(string imageIds)
+        {
+            List<string> imageIdsList = imageIds.Split(',').ToList();
+
+            FilterDefinition<ImageMetadata> filter = Builders<ImageMetadata>.Filter.In(x => x.ImageIdentifier, imageIdsList);
+            List<ImageMetadata> metadataList = await collection.Find(filter).ToListAsync();
+
+            return metadataList;
         }
 
         public static FilterDefinition<ImageMetadata> CreateFilterDefinition(BaseQueryParameters? filterObject)
@@ -68,6 +69,11 @@ namespace MongoDBRepository.Repositories
                     filter &= filterBuilder.Eq(imageMetadata => imageMetadata.Image, queryParameters.Image);
                 }
 
+                if (queryParameters.ImageIdentifier != null)
+                {
+                    filter &= filterBuilder.Eq(imageMetadata => imageMetadata.ImageIdentifier, queryParameters.ImageIdentifier);
+                }
+
                 if (queryParameters.Title != null)
                 {
                     filter &= filterBuilder.Eq(imageMetadata => imageMetadata.Title, queryParameters.Title);
@@ -88,11 +94,6 @@ namespace MongoDBRepository.Repositories
                     filter &= filterBuilder.Eq(imageMetadata => imageMetadata.Location, queryParameters.Location);
                 }
 
-                if (queryParameters.CameraInformation != null)
-                {
-                    filter &= filterBuilder.Eq(imageMetadata => imageMetadata.CameraInformation, queryParameters.CameraInformation);
-                }
-
                 if (queryParameters.CopyrightInformation != null)
                 {
                     filter &= filterBuilder.Eq(imageMetadata => imageMetadata.CopyrightInformation, queryParameters.CopyrightInformation);
@@ -106,15 +107,5 @@ namespace MongoDBRepository.Repositories
 
             return filter;
         }
-
-        protected virtual SortDefinition<ImageMetadata> CreateSortDefinition(BaseQueryParameters? sortObject) 
-        {
-            SortDefinitionBuilder<ImageMetadata> builder = Builders<ImageMetadata>.Sort;
-
-            var sort = builder.Ascending(T => T.Id);
-
-            return sort;
-        }
-
     }
 }
